@@ -16,34 +16,40 @@
     try {
       const t = localStorage.getItem('cqa.theme');
       if (t) document.documentElement.dataset.theme = t;
+      if (localStorage.getItem('cqa.sidebar') === 'collapsed') document.documentElement.dataset.sidebar = 'collapsed';
     } catch {}
   </script>
 </head>
 <body>
   <div id="cqa-app" class="app">
-    <header class="site-header">
-      <div class="wrap header-inner">
-        <a class="brand" href="#/" aria-label="Freedom CQA">
-          <img class="brand-logo logo-on-light" src="/img/freedom-logo.svg" alt="Freedom" width="110" height="28" />
-          <img class="brand-logo logo-on-dark" src="/img/freedom-logo-white.svg" alt="Freedom" width="110" height="28" />
-          <span class="brand-product" id="brand-product"></span>
-        </a>
-        <nav class="nav" id="nav"></nav>
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="sb-brand" href="#/" aria-label="Freedom CQA">
+        <img class="brand-logo logo-on-light" src="/img/freedom-logo.svg" alt="Freedom" width="110" height="28" />
+        <img class="brand-logo logo-on-dark" src="/img/freedom-logo-white.svg" alt="Freedom" width="110" height="28" />
+        <img class="brand-mark" src="/img/freedom-shield.svg" alt="Freedom" width="26" height="28" />
+      </a>
+      <div class="sb-product" id="brand-product"></div>
+      <nav class="nav" id="nav"></nav>
+      <div class="sb-foot" id="engine-card"></div>
+    </aside>
+    <div class="sb-backdrop" id="sb-backdrop"></div>
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn sb-toggle" id="sb-toggle" type="button" aria-controls="sidebar"></button>
+        <div class="crumbs" id="crumbs"></div>
         <div class="header-actions">
-          <a class="btn help-link" href="#/guide" id="help-link"></a>
           <div class="lang" id="lang-switch" role="group" aria-label="Language"></div>
           <button class="icon-btn" id="theme-toggle" type="button" aria-label="Theme"></button>
         </div>
-      </div>
-    </header>
-    <main class="wrap page">
-      <div class="page-head" id="page-head">
-        <div><h1 id="page-title"></h1><p id="page-sub"></p></div>
-        <div class="ph-actions" id="page-actions"></div>
-      </div>
-      <div id="view" class="view" tabindex="-1"></div>
-    </main>
-    <footer class="site-footer"><div class="wrap footer-inner" id="engine-card"></div></footer>
+      </header>
+      <main class="wrap page">
+        <div class="page-head" id="page-head">
+          <div><h1 id="page-title"></h1><p id="page-sub"></p></div>
+          <div class="ph-actions" id="page-actions"></div>
+        </div>
+        <div id="view" class="view" tabindex="-1"></div>
+      </main>
+    </div>
   </div>
   <div id="modal-root"></div>
   <div id="toast-root" aria-live="polite"></div>

@@ -10,13 +10,14 @@ import * as importer from './views/importer.js';
 import * as guide from './views/guide.js';
 import { api } from './api.js';
 
-// Top navigation, text only (like freedombroker.kz). The guide lives in the header button.
+// Sidebar navigation. `section` starts a labelled group.
 const NAV = [
-  { key: 'dashboard', href: '#/' },
-  { key: 'dialogs', href: '#/dialogs' },
-  { key: 'checklists', href: '#/checklists' },
-  { key: 'appeals', href: '#/appeals' },
-  { key: 'import', href: '#/import' },
+  { key: 'dashboard', href: '#/', icon: 'dashboard' },
+  { key: 'dialogs', href: '#/dialogs', icon: 'dialogs' },
+  { key: 'checklists', href: '#/checklists', icon: 'checklist' },
+  { key: 'appeals', href: '#/appeals', icon: 'appeal' },
+  { key: 'import', href: '#/import', icon: 'import' },
+  { key: 'guide', href: '#/guide', icon: 'guide', section: 'nav_sec_help' },
 ];
 
 const ROUTES = {
@@ -39,28 +40,78 @@ function parseHash() {
 function drawNav(activeKey) {
   $('#nav').innerHTML = NAV.map((n) => {
     const count = n.key === 'appeals' && state.open_appeals ? `<span class="count hot">${state.open_appeals}</span>` : '';
-    return `<a href="${n.href}" class="${n.key === activeKey ? 'active' : ''}">${t('nav_' + n.key)}${count}</a>`;
+    const label = t('nav_' + n.key);
+    return `${n.section ? `<div class="nav-label">${t(n.section)}</div>` : ''}<a href="${n.href}" class="${n.key === activeKey ? 'active' : ''}" data-tip="${esc(label)}">${icon(n.icon)}<span class="label">${label}</span>${count}</a>`;
   }).join('');
-  $('#help-link').classList.toggle('btn-primary', activeKey === 'guide');
+  const sub = parseHash().name === 'dialog' ? parseHash().params[0] : null;
+  $('#crumbs').innerHTML = `<span>${t('brand_product')}</span><span class="sep">/</span><b>${t('nav_' + activeKey)}</b>${sub ? `<span class="sep">/</span><b>${esc(sub)}</b>` : ''}`;
+}
+
+const isCollapsed = () => document.documentElement.dataset.sidebar === 'collapsed';
+const isMobile = () => window.matchMedia('(max-width: 860px)').matches;
+
+function drawToggle() {
+  const b = $('#sb-toggle');
+  const label = isCollapsed() ? t('sb_expand') : t('sb_collapse');
+  b.innerHTML = `<span class="ti-desk">${icon(isCollapsed() ? 'panel-open' : 'panel-close')}</span><span class="ti-mob">${icon('menu')}</span>`;
+  b.title = isMobile() ? t('sb_menu') : label;
+  b.setAttribute('aria-label', b.title);
+  b.setAttribute('aria-expanded', String(isMobile() ? !!document.documentElement.dataset.sbOpen : !isCollapsed()));
 }
 
 function drawChrome() {
   const e = state.health?.engine;
-  const cl = activeChecklist();
   $('#brand-product').textContent = t('brand_product');
-  $('#help-link').textContent = t('help');
+  const engineName = e ? (e.mode === 'model' ? e.label : t('engine_stub')) : '';
   $('#engine-card').innerHTML = `
-    <span>Freedom CQA · ${t('brand_product')}</span>
-    <span class="footer-meta">
-      ${e ? `<span><span class="dot ${e.mode === 'model' ? 'live' : ''}"></span>&nbsp; ${t('footer_engine')}: <b>${e.mode === 'model' ? esc(e.label) : t('engine_stub')}</b></span>` : ''}
-      ${cl ? `<span>${t('active_checklist')}: <a href="#/checklists">${esc(cl.name)}, v${cl.version}</a></span>` : ''}
-      <a href="${api.exportUrl()}" download>${t('export_csv')}</a>
-    </span>`;
+    ${e ? `<div class="sb-status" data-tip="${esc(t('footer_engine'))}: ${esc(engineName)}">
+      <span class="ic-slot"><span class="dot ${e.mode === 'model' ? 'live' : ''}"></span></span>
+      <span class="label"><small>${t('footer_engine')}</small><b>${esc(engineName)}</b></span>
+    </div>` : ''}
+    <a class="sb-link" href="${api.exportUrl()}" download data-tip="${esc(t('export_csv'))}">${icon('download')}<span class="label">${t('export_csv')}</span></a>`;
   $('#lang-switch').innerHTML = LANGS.map((l) => `<button type="button" data-lang="${l}" class="${l === getLang() ? 'on' : ''}">${l === 'kz' ? 'Қаз' : l === 'en' ? 'Eng' : 'Рус'}</button>`).join('');
   const theme = document.documentElement.dataset.theme;
   $('#theme-toggle').innerHTML = icon(theme === 'dark' ? 'sun' : 'moon');
   $('#theme-toggle').title = t('theme');
+  drawToggle();
 }
+
+// ---- sidebar toggle: collapse to an icon rail on desktop, slide-out drawer on phones
+function closeDrawer() { delete document.documentElement.dataset.sbOpen; drawToggle(); }
+$('#sb-toggle').addEventListener('click', () => {
+  const root = document.documentElement;
+  if (isMobile()) {
+    root.dataset.sbOpen ? closeDrawer() : (root.dataset.sbOpen = '1', drawToggle());
+    return;
+  }
+  if (isCollapsed()) delete root.dataset.sidebar; else root.dataset.sidebar = 'collapsed';
+  try { localStorage.setItem('cqa.sidebar', isCollapsed() ? 'collapsed' : 'expanded'); } catch {}
+  hideTip();
+  drawToggle();
+});
+$('#sb-backdrop').addEventListener('click', closeDrawer);
+$('#sidebar').addEventListener('click', (e) => { if (isMobile() && e.target.closest('a')) closeDrawer(); });
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.documentElement.dataset.sbOpen) closeDrawer(); });
+window.matchMedia('(max-width: 860px)').addEventListener('change', () => { closeDrawer(); });
+
+// Tooltips for the collapsed rail (the sidebar clips overflow, so they are positioned fixed).
+let tipEl = null;
+function hideTip() { tipEl?.remove(); tipEl = null; }
+$('#sidebar').addEventListener('mouseover', (e) => {
+  const el = e.target.closest('[data-tip]');
+  if (!el || !isCollapsed() || isMobile()) return hideTip();
+  if (tipEl?.dataset.for === el.dataset.tip) return;
+  hideTip();
+  const r = el.getBoundingClientRect();
+  tipEl = document.createElement('div');
+  tipEl.className = 'sb-tip';
+  tipEl.dataset.for = el.dataset.tip;
+  tipEl.textContent = el.dataset.tip;
+  tipEl.style.left = `${r.right + 10}px`;
+  tipEl.style.top = `${r.top + r.height / 2}px`;
+  document.body.appendChild(tipEl);
+});
+$('#sidebar').addEventListener('mouseleave', hideTip);
 
 let cleanup = null;
 let token = 0;
