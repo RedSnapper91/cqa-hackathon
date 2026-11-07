@@ -3,6 +3,9 @@ import { t } from '../i18n.js';
 import { esc, scoreClass, fmtScore, emptyState, $ } from '../ui.js';
 import { runEvaluation, activeChecklist, isViewAlive } from '../state.js';
 
+// Average score colour follows the same bands as the histogram legend: <65 red, 65–84 amber, ≥85 green.
+const AVG_TONE = { 's-hi': 'good', 's-mid': 'mid', 's-lo': 'danger' };
+
 export async function render(view, params, query, token) {
   const s = await api.stats();
   if (!isViewAlive(token)) return;
@@ -26,7 +29,7 @@ export async function render(view, params, query, token) {
     <section class="stats">
       ${stat(t('kpi_dialogs'), s.conversations, `${s.calls} ${t('kpi_calls')} · ${s.by_language.map((l) => l.language).join(', ')}`)}
       ${stat(t('kpi_evaluated'), s.evaluated, `${t('kpi_of')} ${s.conversations}`)}
-      ${stat(t('kpi_avg'), fmtScore(s.average), t('kpi_after_appeals'), '', t('of_100'))}
+      ${stat(t('kpi_avg'), fmtScore(s.average), t('kpi_after_appeals'), AVG_TONE[scoreClass(s.average)] || '', t('of_100'))}
       ${stat(t('kpi_gross'), s.gross_errors, t('kpi_gross_sub'), s.gross_errors ? 'danger' : '')}
       ${stat(t('kpi_appeals'), s.appeals_open, `${t('kpi_open')}, ${t('kpi_of')} ${s.appeals_total}`, s.appeals_open ? 'warn' : '')}
     </section>

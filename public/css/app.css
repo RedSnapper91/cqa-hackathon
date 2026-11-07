@@ -290,6 +290,9 @@ h1, h2, h3, h4 { color: var(--text); }
 .stat .s-sub { color: var(--muted); font-size: 12.5px; }
 .stat.danger .s-val { color: var(--no); }
 .stat.warn .s-val { color: var(--warn); }
+.stat.good .s-val { color: var(--yes); }
+.stat.mid .s-val { color: #d97706; }
+[data-theme="dark"] .stat.mid .s-val { color: #fbbf24; }
 .stat a.s-sub:hover { color: var(--brand-text); text-decoration: underline; }
 
 .grid-2 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
