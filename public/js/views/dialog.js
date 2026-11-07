@@ -4,6 +4,11 @@ import { esc, icon, ring, animate, ans, answerOptions, fmtDate, fmtTs, fmtScore,
 import { runEvaluation, checklistOptions, isViewAlive, refreshMeta } from '../state.js';
 
 const prefs = { context: true, opOnly: false };
+const FONT_STEPS = [85, 100, 115, 130, 150];
+const FONT_DEFAULT = 1;
+let fontStep = (() => {
+  try { const i = FONT_STEPS.indexOf(Number(localStorage.getItem('cqa.tfont'))); return i < 0 ? FONT_DEFAULT : i; } catch { return FONT_DEFAULT; }
+})();
 
 export async function render(view, params, query, token) {
   const id = params[0];
@@ -31,6 +36,11 @@ export async function render(view, params, query, token) {
           <div class="row" style="gap:14px">
             <label class="switch"><input type="checkbox" id="ctx" ${prefs.context ? 'checked' : ''}> ${t('show_context')}</label>
             <label class="switch"><input type="checkbox" id="oponly" ${prefs.opOnly ? 'checked' : ''}> ${t('operator_only')}</label>
+            <div class="fsz" role="group" aria-label="${t('font_size')}">
+              <button type="button" data-fs="-1" title="${t('font_smaller')}" aria-label="${t('font_smaller')}"><span class="a-sm">A</span><span class="pm">−</span></button>
+              <button type="button" data-fs="0" class="fsz-val" title="${t('font_reset')}" aria-live="polite"></button>
+              <button type="button" data-fs="1" title="${t('font_larger')}" aria-label="${t('font_larger')}"><span class="a-lg">A</span><span class="pm">+</span></button>
+            </div>
           </div>
         </div>
         ${isCall ? `<div class="audio-card" id="audio-card">
@@ -55,6 +65,25 @@ export async function render(view, params, query, token) {
   applyPrefs();
   $('#ctx', view).addEventListener('change', (e) => { prefs.context = e.target.checked; applyPrefs(); });
   $('#oponly', view).addEventListener('change', (e) => { prefs.opOnly = e.target.checked; applyPrefs(); });
+
+  // ---- transcript font size (A− / 100% / A+), remembered per browser
+  const transcriptCard = $('.transcript', view);
+  const applyFont = () => {
+    const pct = FONT_STEPS[fontStep];
+    transcriptCard.style.setProperty('--ts', String(pct / 100));
+    $('.fsz-val', view).textContent = `${pct}%`;
+    $('[data-fs="-1"]', view).disabled = fontStep === 0;
+    $('[data-fs="1"]', view).disabled = fontStep === FONT_STEPS.length - 1;
+  };
+  applyFont();
+  $('.fsz', view).addEventListener('click', (e) => {
+    const b = e.target.closest('[data-fs]');
+    if (!b || b.disabled) return;
+    const d = Number(b.dataset.fs);
+    fontStep = d === 0 ? FONT_DEFAULT : Math.min(FONT_STEPS.length - 1, Math.max(0, fontStep + d));
+    try { localStorage.setItem('cqa.tfont', String(FONT_STEPS[fontStep])); } catch {}
+    applyFont();
+  });
 
   // ---- evidence highlighting
   const highlight = (critId) => {
