@@ -1,7 +1,16 @@
+# Node / CQA web app
 node_modules/
 data/db.json
 data/db.json.tmp
 # signed organizer links: never commit
 config.local.json
 data/dataset-*.json
+
+# Python model service
+.venv/
+__pycache__/
+
+# secrets
 .env
+.env.*
+!.env.example
