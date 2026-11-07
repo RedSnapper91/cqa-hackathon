@@ -26,8 +26,8 @@ export async function render(view, params, query, token) {
       </div>
       <div class="grow"></div>
       <select class="select" id="cl" style="width:auto;max-width:280px">${checklistOptions()}</select>
-      <button class="btn" id="eval-visible">${icon('bolt')} ${t('evaluate_visible')} <span class="mono" id="n-visible"></span></button>
-      <button class="btn btn-primary" id="eval-selected" disabled>${icon('check')} ${t('evaluate_selected')} <span class="mono" id="n-sel"></span></button>
+      <button class="btn" id="eval-visible">${t('evaluate_visible')} <span class="n" id="n-visible"></span></button>
+      <button class="btn btn-primary" id="eval-selected" disabled>${t('evaluate_selected')} <span class="n" id="n-sel"></span></button>
     </div>
     <div class="table-wrap">
       <table class="t">
@@ -71,16 +71,16 @@ export async function render(view, params, query, token) {
     return `<tr data-id="${esc(c.conversation_id)}" class="${selected.has(c.conversation_id) ? 'sel' : ''}">
       <td><input type="checkbox" class="cb" data-sel ${selected.has(c.conversation_id) ? 'checked' : ''}></td>
       <td class="cell-main"><div class="id">${esc(c.conversation_id)}</div><div class="preview">${esc(c.preview)}</div></td>
-      <td><span class="badge lang-${c.language}">${c.language}</span></td>
-      <td class="hide-sm"><span class="badge">${icon(c.channel === 'voice call' ? 'phone' : 'chat')} ${c.channel === 'voice call' ? t('call') : t('chat')}</span></td>
+      <td>${c.language}</td>
+      <td class="hide-sm">${c.channel === 'voice call' ? t('call') : t('chat')}</td>
       <td class="hide-sm mono">${c.messages}</td>
       <td>${e ? `<span class="score-pill ${scoreClass(total)}">${fmtScore(total)}</span>${e.total !== e.final_total ? `<div class="strike" style="font-size:11px;margin-top:2px">${fmtScore(e.total)}</div>` : ''}` : `<span class="muted" style="font-size:12px">${t('not_evaluated')}</span>`}</td>
       <td><div class="row" style="gap:5px">
-        ${e?.gross_error ? `<span class="badge gross">${icon('alert')} ${t('gross_error')}</span>` : ''}
-        ${e?.open_appeals ? `<span class="badge warn">${icon('appeal')} ${e.open_appeals}</span>` : ''}
-        ${e && e.na_count ? `<span class="badge">N/A ×${e.na_count}</span>` : ''}
+        ${e?.gross_error ? `<span class="badge gross">${t('gross_error')}</span>` : ''}
+        ${e?.open_appeals ? `<span class="badge warn">${t('appeal_open')}</span>` : ''}
+        ${e && e.na_count ? `<span class="badge">N/A: ${e.na_count}</span>` : ''}
       </div></td>
-      <td class="hide-sm muted cell-cl" style="font-size:12px">${e ?`${esc(e.checklist_name)} v${e.checklist_version}<br>${fmtDate(e.created_at)}` : ''}</td>
+      <td class="hide-sm muted cell-cl" style="font-size:12px">${e ?`${esc(e.checklist_name)}, v${e.checklist_version}<br>${fmtDate(e.created_at)}` : ''}</td>
     </tr>`;
   };
 

@@ -43,17 +43,17 @@ function card(a) {
   return `<article class="ap-card">
     <div class="row" style="justify-content:space-between">
       <div class="row" style="gap:8px">
-        <a class="mono" style="font-weight:800" href="#/dialog/${encodeURIComponent(a.conversation_id)}?ev=${a.evaluation_id}&crit=${a.criterion_id}">${esc(a.conversation_id)}</a>
-        <span class="badge lang-${a.language}">${a.language}</span>
+        <a class="link" style="font-weight:600" href="#/dialog/${encodeURIComponent(a.conversation_id)}?ev=${a.evaluation_id}&crit=${a.criterion_id}">${esc(a.conversation_id)}</a>
+        <span class="badge">${a.language}</span>
       </div>
       <span class="muted" style="font-size:12px">${fmtDate(a.created_at)}</span>
     </div>
     <div class="row" style="margin-top:10px;gap:8px">
-      <span class="mono muted" style="font-weight:800">${esc(c?.code)}</span><b>${esc(c?.title)}</b>
+      <span class="muted">${esc(c?.code)}</span><b style="font-weight:600">${esc(c?.title)}</b>
       <span style="margin-left:auto" class="row">${ans(c, a.original_answer)}${a.requested_answer != null && a.status === 'open' ? ` <span class="arrow">→ ${t('requested')}</span> ${ans(c, a.requested_answer)}` : ''}${a.status === 'changed' ? ` <span class="arrow">→</span> ${ans(c, a.decision.new_answer)}` : ''}</span>
     </div>
     ${a.evidence?.length ? `<div class="quote">${a.evidence.slice(0, 2).map((l) => `<div><b>${t(l.speaker)}</b> <span class="muted mono">#${l.idx}</span> ${esc(l.text.length > 160 ? l.text.slice(0, 159) + '…' : l.text)}</div>`).join('')}</div>` : ''}
-    <p class="comment">💬 «${esc(a.comment)}» <span class="muted">— ${esc(a.author)}</span></p>
+    <p class="comment">«${esc(a.comment)}» <span class="muted">— ${esc(a.author)}</span></p>
     ${a.decision ? `<div class="appeal-note ${a.status}" style="margin-top:10px"><b>${a.status === 'changed' ? t('appeal_changed') : t('appeal_upheld')}</b><div class="muted">${t('reason')}: ${esc(a.decision.reason)} — ${esc(a.decision.reviewer)}</div></div>` : ''}
     <div class="row" style="justify-content:space-between;margin-top:12px">
       <span class="row" style="gap:8px"><span class="muted" style="font-size:12px">${t('total_change')}</span>

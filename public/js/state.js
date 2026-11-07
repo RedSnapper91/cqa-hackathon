@@ -28,7 +28,7 @@ export async function refreshMeta() {
 export const activeChecklist = () => state.checklists.find((c) => c.id === state.active_checklist_id) || state.checklists[0];
 export const checklistOptions = (selected = state.active_checklist_id) =>
   state.checklists
-    .map((c) => `<option value="${c.id}" ${c.id === selected ? 'selected' : ''}>${esc(c.name)} · v${c.version}${c.id === state.active_checklist_id ? ' ★' : ''}</option>`)
+    .map((c) => `<option value="${c.id}" ${c.id === selected ? 'selected' : ''}>${esc(c.name)}, v${c.version}${c.id === state.active_checklist_id ? ` (${t('active')})` : ''}</option>`)
     .join('');
 
 /**
@@ -45,8 +45,8 @@ export async function runEvaluation(body) {
     const draw = (j) => {
       const pct = j.total ? Math.round((j.done / j.total) * 100) : 0;
       bar.innerHTML = `<div class="row" style="justify-content:space-between">
-          <b>${j.status === 'done' ? '✓ ' + t('job_done') : '<span class="spin" style="color:var(--brand);vertical-align:-3px"></span>&nbsp; ' + t('job_running')}</b>
-          <span class="mono">${j.done} / ${j.total}${j.failed ? ` · ${j.failed} ${t('errors')}` : ''}</span>
+          <b style="font-weight:600">${j.status === 'done' ? t('job_done') : '<span class="spin" style="color:var(--brand);vertical-align:-2px"></span>&nbsp; ' + t('job_running')}</b>
+          <span class="muted mono">${j.done} / ${j.total}${j.failed ? ` · ${j.failed} ${t('errors')}` : ''}</span>
         </div><div class="progress"><i style="width:${pct}%"></i></div>`;
     };
     draw(r);

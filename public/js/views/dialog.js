@@ -17,15 +17,9 @@ export async function render(view, params, query, token) {
 
   view.innerHTML = `
     <div class="dlg-head">
+      <a class="back-link" href="#/dialogs">${icon('back')} ${t('back')}</a>
       <div class="row">
-        <a class="btn btn-ghost btn-sm" href="#/dialogs">${icon('back')} ${t('back')}</a>
-        <h2>${esc(conv.conversation_id)}</h2>
-        <span class="badge lang-${conv.language}">${conv.language}</span>
-        <span class="badge">${icon(isCall ? 'phone' : 'chat')} ${isCall ? t('call') : t('chat')}</span>
-        <span class="badge">${icon('db')} ${esc(conv.group_id)}</span>
-      </div>
-      <div class="row">
-        ${evs.length > 1 ? `<select class="select" id="hist" style="width:auto" title="${t('history')}">${evs.map((e, i) => `<option value="${e.id}" ${e.id === ev?.id ? 'selected' : ''}>${i === 0 ? '● ' : ''}${fmtDate(e.created_at)} · ${esc(e.checklist.name)} v${e.checklist.version} · ${fmtScore(e.final_score.total)}</option>`).join('')}</select>` : ''}
+        ${evs.length > 1 ? `<select class="select" id="hist" style="width:auto" title="${t('history')}">${evs.map((e, i) => `<option value="${e.id}" ${e.id === ev?.id ? 'selected' : ''}>${fmtDate(e.created_at)} — ${esc(e.checklist.name)}, v${e.checklist.version} — ${fmtScore(e.final_score.total)}</option>`).join('')}</select>` : ''}
         <select class="select" id="cl" style="width:auto;max-width:260px">${checklistOptions()}</select>
         <button class="btn btn-primary" id="run">${icon('bolt')} ${ev ? t('re_evaluate') : t('evaluate')}</button>
       </div>
@@ -33,7 +27,7 @@ export async function render(view, params, query, token) {
     <div class="split">
       <section class="card transcript">
         <div class="t-head">
-          <b>${t('transcript')} <span class="muted mono" style="font-weight:600">· ${conv.transcript.length}</span></b>
+          <b>${t('transcript')} <span class="muted" style="font-weight:400">(${conv.transcript.length})</span></b>
           <div class="row" style="gap:14px">
             <label class="switch"><input type="checkbox" id="ctx" ${prefs.context ? 'checked' : ''}> ${t('show_context')}</label>
             <label class="switch"><input type="checkbox" id="oponly" ${prefs.opOnly ? 'checked' : ''}> ${t('operator_only')}</label>
@@ -50,6 +44,8 @@ export async function render(view, params, query, token) {
       <section class="stack" id="result">${ev ? result(ev) : `<div class="card">${emptyState('target', t('no_eval'), t('no_eval_text'), `<button class="btn btn-primary" id="run2">${icon('bolt')} ${t('evaluate')}</button>`)}</div>`}</section>
     </div>`;
   animate(view);
+  $('#page-title').textContent = conv.conversation_id;
+  $('#page-sub').textContent = `${isCall ? t('call') : t('chat')} · ${conv.language} · ${conv.group_id}`;
 
   const tbody = $('#tbody', view);
   const applyPrefs = () => {
@@ -231,15 +227,15 @@ function result(ev) {
       <div class="result-hero">
         ${ring(fs.total, { size: 150, stroke: 12, label: t('total') })}
         <div class="facts">
-          ${changed ? `<div class="row" style="gap:8px"><span class="muted" style="font-size:12px">${t('original')}</span><span class="strike">${fmtScore(os.total)}</span><span class="arrow">→</span><b class="mono" style="color:var(--info)">${fmtScore(fs.total)}</b><span class="muted" style="font-size:12px">${t('final')}</span></div>` : ''}
-          <div style="font-weight:800;font-size:15px">${esc(ev.checklist.name)} <span class="muted">v${ev.checklist.version}</span></div>
+          ${changed ? `<div class="row" style="gap:8px"><span class="muted" style="font-size:12px">${t('original')}</span><span class="strike">${fmtScore(os.total)}</span><span class="arrow">→</span><b class="mono">${fmtScore(fs.total)}</b><span class="muted" style="font-size:12px">${t('final')}</span></div>` : ''}
+          <div class="cl-name">${esc(ev.checklist.name)} <span class="muted" style="font-weight:400">v${ev.checklist.version}</span></div>
           <div class="row" style="gap:6px">
             <span class="badge ${ev.engine === 'model' ? 'ok' : 'info'}">${icon('cpu')} ${ev.engine === 'model' ? esc(ev.model) : t('engine_stub')}</span>
             <span class="badge">${fmtDate(ev.created_at)}</span>
             ${fs.na_count ? `<span class="badge">N/A × ${fs.na_count}</span>` : ''}
           </div>
           ${fs.na_count && fs.total !== null ? `<div class="muted" style="font-size:12.5px">${t('redistributed', { a: fs.applicable_weight, b: fs.configured_weight })}</div>` : ''}
-          ${ev.fallback_reason ? `<div class="muted" style="font-size:12px">⚠ ${esc(ev.fallback_reason)}</div>` : ''}
+          ${ev.fallback_reason ? `<div class="muted" style="font-size:12.5px">${esc(ev.fallback_reason)}</div>` : ''}
         </div>
       </div>
       ${flagged.length ? `<div class="gross-banner">${icon('alert')}<div><b>${t('gross_error')}</b> — ${flagged.map((c) => esc(c.title)).join(', ')}<div class="muted" style="font-size:12.5px">${t('gross_text')}</div></div></div>` : ''}

@@ -10,13 +10,13 @@ import * as importer from './views/importer.js';
 import * as guide from './views/guide.js';
 import { api } from './api.js';
 
+// Top navigation, text only (like freedombroker.kz). The guide lives in the header button.
 const NAV = [
-  { key: 'dashboard', href: '#/', icon: 'dashboard' },
-  { key: 'dialogs', href: '#/dialogs', icon: 'dialogs' },
-  { key: 'checklists', href: '#/checklists', icon: 'checklist' },
-  { key: 'appeals', href: '#/appeals', icon: 'appeal' },
-  { key: 'import', href: '#/import', icon: 'import' },
-  { key: 'guide', href: '#/guide', icon: 'guide' },
+  { key: 'dashboard', href: '#/' },
+  { key: 'dialogs', href: '#/dialogs' },
+  { key: 'checklists', href: '#/checklists' },
+  { key: 'appeals', href: '#/appeals' },
+  { key: 'import', href: '#/import' },
 ];
 
 const ROUTES = {
@@ -39,30 +39,27 @@ function parseHash() {
 function drawNav(activeKey) {
   $('#nav').innerHTML = NAV.map((n) => {
     const count = n.key === 'appeals' && state.open_appeals ? `<span class="count hot">${state.open_appeals}</span>` : '';
-    return `<a href="${n.href}" class="${n.key === activeKey ? 'active' : ''}">${icon(n.icon)}<span>${t('nav_' + n.key)}</span>${count}</a>`;
+    return `<a href="${n.href}" class="${n.key === activeKey ? 'active' : ''}">${t('nav_' + n.key)}${count}</a>`;
   }).join('');
+  $('#help-link').classList.toggle('btn-primary', activeKey === 'guide');
 }
 
 function drawChrome() {
   const e = state.health?.engine;
-  $('#engine-card').innerHTML = e
-    ? `<div class="engine">
-        <div class="engine-head"><span class="dot ${e.mode === 'model' ? 'live' : ''}"></span>${icon('cpu').replace('<svg', '<svg style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2"')} ${e.mode === 'model' ? t('engine_model') : t('engine_stub')}</div>
-        <p>${e.mode === 'model' ? esc(e.label) : t('engine_stub_text')}</p>
-        <p style="margin-top:10px"><a class="btn btn-sm" href="${api.exportUrl()}" download>${icon('download')} ${t('export_csv')}</a></p>
-      </div>`
-    : '';
   const cl = activeChecklist();
-  const pill = $('#active-checklist');
-  pill.innerHTML = cl ? `<span>${esc(cl.name)} · v${cl.version}</span>` : '';
-  pill.title = t('active_checklist');
-  $('#lang-switch').innerHTML = LANGS.map((l) => `<button type="button" data-lang="${l}" class="${l === getLang() ? 'on' : ''}">${l.toUpperCase()}</button>`).join('');
+  $('#brand-product').textContent = t('brand_product');
+  $('#help-link').textContent = t('help');
+  $('#engine-card').innerHTML = `
+    <span>Freedom CQA · ${t('brand_product')}</span>
+    <span class="footer-meta">
+      ${e ? `<span><span class="dot ${e.mode === 'model' ? 'live' : ''}"></span>&nbsp; ${t('footer_engine')}: <b>${e.mode === 'model' ? esc(e.label) : t('engine_stub')}</b></span>` : ''}
+      ${cl ? `<span>${t('active_checklist')}: <a href="#/checklists">${esc(cl.name)}, v${cl.version}</a></span>` : ''}
+      <a href="${api.exportUrl()}" download>${t('export_csv')}</a>
+    </span>`;
+  $('#lang-switch').innerHTML = LANGS.map((l) => `<button type="button" data-lang="${l}" class="${l === getLang() ? 'on' : ''}">${l === 'kz' ? 'Қаз' : l === 'en' ? 'Eng' : 'Рус'}</button>`).join('');
   const theme = document.documentElement.dataset.theme;
   $('#theme-toggle').innerHTML = icon(theme === 'dark' ? 'sun' : 'moon');
   $('#theme-toggle').title = t('theme');
-  const help = $('#help-link');
-  help.href = '#/guide';
-  help.innerHTML = `${icon('guide')}<span>${t('help')}</span>`;
 }
 
 let cleanup = null;
@@ -73,14 +70,14 @@ async function route() {
   const r = ROUTES[name] || ROUTES[''];
   drawNav(r.nav);
   if (name) guide.markSeen(name);
-  $('#page-title').textContent = t('nav_' + r.nav);
+  $('#page-title').textContent = t('title_' + r.nav);
   $('#page-sub').textContent = t('sub_' + r.nav);
+  $('#page-actions').innerHTML = '';
   if (typeof cleanup === 'function') cleanup();
   cleanup = null;
   const view = $('#view');
   view.onclick = view.oninput = view.onchange = null;
   $('#modal-root').innerHTML = '';
-  document.querySelectorAll('.jobbar').forEach((b) => b.dataset.keep || null);
   view.dataset.token = String(++token);
   view.innerHTML = '<div class="skeleton" style="height:220px"></div>';
   try {

@@ -54,7 +54,6 @@ export async function render(view, params, query, token) {
   const body = [
     // 1. Load
     `<label class="drop big" id="g-drop">
-        ${icon('file').replace('<svg', '<svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.6;display:block;margin:0 auto 8px"')}
         <div class="drop-title">${t('drop_title')}</div>
         <div>JSON · <span class="mono">{ "data": { "records": [ … ] } }</span></div>
         <input type="file" id="g-file" accept=".json,application/json" hidden>
@@ -97,14 +96,10 @@ export async function render(view, params, query, token) {
 
   view.innerHTML = `
     <section class="guide-head">
-      <div style="position:relative;z-index:1">
-        <span class="eyebrow">${t('g_eyebrow')}</span>
-        <h2>${t('g_title')}</h2>
-        <p>${t('g_text')}</p>
-      </div>
+      <p>${t('g_text')}</p>
       <div class="g-progress">
-        <div class="num">${doneCount}<span style="opacity:.55;font-size:24px"> / 6</span></div>
-        <div style="opacity:.82;font-size:13px;margin-top:4px">${t('g_done')}</div>
+        <div class="num">${doneCount} <span>/ 6</span></div>
+        <div class="lbl">${t('g_done')}</div>
         <div class="bar"><i style="width:${(doneCount / 6) * 100}%"></i></div>
       </div>
     </section>

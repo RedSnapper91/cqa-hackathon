@@ -43,43 +43,20 @@ export function scoreClass(v) {
   return v >= 85 ? 's-hi' : v >= 65 ? 's-mid' : 's-lo';
 }
 export const fmtScore = (v) => (v === null || v === undefined ? '—' : Number(v).toFixed(v % 1 ? 2 : 0));
-export const scoreColor = (v) => (v === null || v === undefined ? 'var(--na)' : v >= 85 ? 'var(--brand)' : v >= 65 ? 'var(--warn)' : 'var(--no)');
+export const scoreColor = (v) => (v === null || v === undefined ? 'var(--na)' : v >= 85 ? 'var(--brand)' : v >= 65 ? 'var(--warn-bar)' : 'var(--no)');
 
-export function ring(value, { size = 132, stroke = 11, label = '', sub = '' } = {}) {
-  const r = (size - stroke) / 2;
-  const c = 2 * Math.PI * r;
+/** Score block: large number "/ 100" with a thin bar. (Named ring() for existing callers.) */
+export function ring(value, { label = '' } = {}) {
   const pct = value === null || value === undefined ? 0 : Math.max(0, Math.min(100, value));
-  const color = scoreColor(value);
-  return `<div class="ring" style="width:${size}px;height:${size}px;--ring-glow:${color}55">
-    <svg width="${size}" height="${size}">
-      <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-width="${stroke}" fill="none"/>
-      <circle class="bar" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-width="${stroke}" fill="none" stroke="${color}"
-        stroke-dasharray="${c}" stroke-dashoffset="${c}" data-target="${c * (1 - pct / 100)}"/>
-    </svg>
-    <div class="label"><div><b style="font-size:${Math.round(size * (value % 1 ? 0.21 : 0.26))}px" data-count="${value ?? ''}">${value === null || value === undefined ? '—' : '0'}</b>${label ? `<small>${esc(label)}</small>` : ''}${sub ? `<small>${sub}</small>` : ''}</div></div>
+  return `<div class="scorebox">
+    ${label ? `<div class="sb-label">${esc(label)}</div>` : ''}
+    <div class="sb-val"><b>${fmtScore(value)}</b><span>${value === null || value === undefined ? '' : '/ 100'}</span></div>
+    <div class="sb-track"><i style="width:${pct}%;background:${scoreColor(value)}"></i></div>
   </div>`;
 }
 
-/** Animate rings and count-ups inside a root after render. */
-export function animate(root = document) {
-  requestAnimationFrame(() => {
-    $$('.ring .bar', root).forEach((el) => (el.style.strokeDashoffset = el.dataset.target));
-    $$('[data-count]', root).forEach((el) => {
-      const target = parseFloat(el.dataset.count);
-      if (Number.isNaN(target)) return;
-      const dec = target % 1 ? 2 : 0;
-      const t0 = performance.now();
-      const dur = 900;
-      const step = (now) => {
-        const k = Math.min(1, (now - t0) / dur);
-        const e = 1 - Math.pow(1 - k, 3);
-        el.textContent = (target * e).toFixed(dec);
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  });
-}
+/** Kept for callers; values are rendered final, without count-up effects. */
+export function animate() {}
 
 export function ansClass(crit, answer) {
   if (answer === 'na') return 'na';

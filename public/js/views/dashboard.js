@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { t } from '../i18n.js';
-import { esc, icon, ring, animate, scoreClass, fmtScore, emptyState } from '../ui.js';
+import { esc, scoreClass, fmtScore, emptyState, $ } from '../ui.js';
 import { runEvaluation, activeChecklist, isViewAlive } from '../state.js';
 
 export async function render(view, params, query, token) {
@@ -10,27 +10,25 @@ export async function render(view, params, query, token) {
   const maxHist = Math.max(1, ...s.histogram.map((h) => h.count));
   const evaluated = s.evaluated > 0;
 
-  view.innerHTML = `
-    <section class="hero">
-      <div style="position:relative;z-index:1">
-        <span class="eyebrow">${t('hero_eyebrow')}</span>
-        <h2>${t('hero_title')}</h2>
-        <p>${t('hero_text')}</p>
-        <div class="row">
-          <button class="btn btn-primary" id="run-all">${icon('bolt')} ${t('evaluate_all')}</button>
-          <a class="btn" href="#/dialogs">${icon('dialogs')} ${t('open_dialogs')}</a>
-          <span class="muted" style="font-size:12.5px">${t('active_checklist')}: <b style="color:var(--text)">${esc(cl?.name)} · v${cl?.version}</b></span>
-        </div>
-      </div>
-      <div class="hero-ring">${ring(s.average, { size: 190, stroke: 14, label: t('avg_score') })}</div>
-    </section>
+  $('#page-actions').innerHTML = `
+    <a class="btn" href="#/dialogs">${t('open_dialogs')}</a>
+    <button class="btn btn-primary" id="run-all">${t('evaluate_all')}</button>`;
 
-    <section class="kpis">
-      ${kpi('users', t('kpi_dialogs'), s.conversations, `${s.calls} ${t('kpi_calls')} · ${s.by_language.map((l) => l.language).join(' / ')}`)}
-      ${kpi('check', t('kpi_evaluated'), s.evaluated, `${t('kpi_of')} ${s.conversations}`, 'accent')}
-      ${kpi('target', t('kpi_avg'), s.average, t('kpi_after_appeals'))}
-      ${kpi('alert', t('kpi_gross'), s.gross_errors, t('kpi_gross_sub'), s.gross_errors ? 'danger' : '')}
-      ${kpi('appeal', t('kpi_appeals'), s.appeals_total, `${s.appeals_open} ${t('kpi_open')}`, s.appeals_open ? 'warn' : '')}
+  const risk = [...new Map([...s.worst, ...s.gross_list].map((w) => [w.conversation_id, w])).values()]
+    .sort((a, b) => (b.gross - a.gross) || (a.total - b.total))
+    .slice(0, 8);
+
+  view.innerHTML = `
+    <div class="dash-bar">
+      <span>${t('active_checklist')}: <a class="link" href="#/checklists">${esc(cl?.name)}, v${cl?.version}</a></span>
+    </div>
+
+    <section class="stats">
+      ${stat(t('kpi_dialogs'), s.conversations, `${s.calls} ${t('kpi_calls')} · ${s.by_language.map((l) => l.language).join(', ')}`)}
+      ${stat(t('kpi_evaluated'), s.evaluated, `${t('kpi_of')} ${s.conversations}`)}
+      ${stat(t('kpi_avg'), fmtScore(s.average), t('kpi_after_appeals'), '', t('of_100'))}
+      ${stat(t('kpi_gross'), s.gross_errors, t('kpi_gross_sub'), s.gross_errors ? 'danger' : '')}
+      ${stat(t('kpi_appeals'), s.appeals_open, `${t('kpi_open')}, ${t('kpi_of')} ${s.appeals_total}`, s.appeals_open ? 'warn' : '')}
     </section>
 
     ${evaluated ? `
@@ -39,66 +37,77 @@ export async function render(view, params, query, token) {
         <div class="card-head"><h3>${t('hist_title')}</h3><span class="muted">${t('hist_sub')}</span></div>
         <div class="hist">
           ${s.histogram.map((h) => `
-            <div class="col">
+            <div class="col" title="${h.from}–${h.to}: ${h.count}">
               <div class="bar ${h.from < 65 ? 'lo' : h.from < 85 ? 'mid' : ''}" style="height:${(h.count / maxHist) * 100}%">${h.count ? `<b>${h.count}</b>` : ''}</div>
-              <span class="tick">${h.from}</span>
             </div>`).join('')}
+        </div>
+        <div class="hist-ticks">${s.histogram.map((h) => `<span>${h.from}</span>`).join('')}</div>
+        <div class="legend">
+          <span><i style="background:#ef4444"></i>${t('leg_lo')}</span>
+          <span><i style="background:var(--warn-bar)"></i>${t('leg_mid')}</span>
+          <span><i style="background:var(--brand)"></i>${t('leg_hi')}</span>
         </div>
       </div>
       <div class="card">
         <div class="card-head"><h3>${t('crit_title')}</h3><span class="muted">${t('crit_sub')}</span></div>
-        <div class="hbars">
-          ${s.per_criterion.map((c, i) => `
-            <div class="hbar" title="${esc(c.title)} · N/A: ${c.na}">
-              <span class="code">${esc(c.code)}</span>
-              <div><div class="name">${esc(c.title)}</div><div class="track"><div class="fill ${c.type === 'flag' ? 'danger' : ''}" style="width:${c.rate ?? 0}%;animation-delay:${i * 60}ms"></div></div></div>
-              <span class="val" style="color:${c.type === 'flag' ? 'var(--no)' : 'inherit'}">${c.rate === null ? '—' : c.rate.toFixed(0) + '%'}</span>
-            </div>`).join('')}
-        </div>
+        <table class="dt">
+          <thead><tr><th class="n0">№</th><th>${t('col_crit')}</th><th style="width:30%">${t('col_rate')}</th><th class="num">%</th></tr></thead>
+          <tbody>
+          ${s.per_criterion.map((c) => `
+            <tr title="N/A: ${c.na}">
+              <td class="n0">${esc(c.code)}</td>
+              <td>${esc(c.title)}</td>
+              <td><div class="meter"><i class="${c.type === 'flag' ? 'danger' : c.rate !== null && c.rate < 65 ? 'mid' : ''}" style="width:${c.rate ?? 0}%"></i></div></td>
+              <td class="num" style="${c.type === 'flag' && c.rate ? 'color:var(--no)' : ''}">${c.rate === null ? '—' : c.rate.toFixed(0)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section class="grid-2" style="margin-top:16px">
       <div class="card">
-        <div class="card-head"><h3>${t('lang_title')}</h3></div>
-        <div class="lang-tiles">
-          ${s.by_language.map((l) => `
-            <a class="lang-tile" href="#/dialogs?lang=${l.language}">
-              <span class="badge lang-${l.language}">${l.language}</span>
-              <div class="big" style="color:${l.average === null ? 'var(--muted)' : ''}">${fmtScore(l.average)}</div>
-              <div class="muted" style="font-size:12px">${l.evaluated}/${l.conversations} ${t('kpi_evaluated').toLowerCase()}</div>
-            </a>`).join('')}
-        </div>
+        <div class="card-head"><h3>${t('risk_title')}</h3><span class="muted">${t('risk_sub')}</span></div>
+        <table class="dt">
+          <thead><tr><th>${t('col_dialog')}</th><th>${t('col_status')}</th><th class="num">${t('col_score')}</th></tr></thead>
+          <tbody>
+          ${risk.map((w) => `<tr>
+              <td><a href="#/dialog/${encodeURIComponent(w.conversation_id)}" style="font-weight:600">${esc(w.conversation_id)}</a></td>
+              <td>${w.gross ? `<span class="badge gross">${t('gross_error')}</span>` : ''}</td>
+              <td class="num"><span class="score-pill ${scoreClass(w.total)}">${fmtScore(w.total)}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
       </div>
       <div class="card">
-        <div class="card-head"><h3>${t('risk_title')}</h3><span class="muted">${t('risk_sub')}</span></div>
-        <div class="list">
-          ${[...new Map([...s.worst, ...s.gross_list].map((w) => [w.conversation_id, w])).values()]
-            .sort((a, b) => (b.gross - a.gross) || (a.total - b.total))
-            .slice(0, 8)
-            .map((w) => `<a class="list-item" href="#/dialog/${encodeURIComponent(w.conversation_id)}">
-              <span class="mono" style="font-weight:700">${esc(w.conversation_id)}</span>
-              ${w.gross ? `<span class="badge gross">${icon('alert')} ${t('gross_error')}</span>` : ''}
-              <span style="margin-left:auto" class="score-pill ${scoreClass(w.total)}">${fmtScore(w.total)}</span>
-            </a>`).join('')}
-        </div>
+        <div class="card-head"><h3>${t('lang_title')}</h3></div>
+        <table class="dt">
+          <thead><tr><th>${t('col_lang')}</th><th class="num">${t('kpi_dialogs')}</th><th class="num">${t('kpi_evaluated')}</th><th class="num">${t('col_avg')}</th></tr></thead>
+          <tbody>
+          ${s.by_language.map((l) => `<tr>
+              <td><a href="#/dialogs?lang=${l.language}" style="font-weight:600">${l.language}</a></td>
+              <td class="num">${l.conversations}</td>
+              <td class="num">${l.evaluated}</td>
+              <td class="num">${fmtScore(l.average)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
       </div>
-    </section>` : `<div class="card">${emptyState('bolt', t('nothing_yet'), t('nothing_yet_text'), `<button class="btn btn-primary" id="run-all-2">${icon('bolt')} ${t('evaluate_all')}</button>`)}</div>`}
+    </section>` : `<div class="card">${emptyState('bolt', t('nothing_yet'), t('nothing_yet_text'), `<button class="btn btn-primary" id="run-all-2">${t('evaluate_all')}</button>`)}</div>`}
   `;
-  animate(view);
 
   const runAll = async () => {
     await runEvaluation({ group_id: '*', checklist_id: activeChecklist()?.id });
     if (isViewAlive(token)) render(view, params, query, token);
   };
-  view.querySelector('#run-all')?.addEventListener('click', runAll);
+  $('#run-all')?.addEventListener('click', runAll);
   view.querySelector('#run-all-2')?.addEventListener('click', runAll);
 }
 
-function kpi(ic, label, value, sub, cls = '') {
-  return `<div class="kpi ${cls}">
-    <div class="k-label">${icon(ic)} ${esc(label)}</div>
-    <div class="k-val" data-count="${value ?? ''}">${value === null || value === undefined ? '—' : 0}</div>
-    <div class="k-sub">${esc(sub)}</div>
+function stat(label, value, sub, cls = '', unit = '') {
+  return `<div class="stat ${cls}">
+    <div class="s-label">${esc(label)}</div>
+    <div class="s-val">${value === null || value === undefined ? '—' : esc(value)}${unit && value !== '—' ? `<small>${esc(unit)}</small>` : ''}</div>
+    <div class="s-sub">${esc(sub)}</div>
   </div>`;
 }

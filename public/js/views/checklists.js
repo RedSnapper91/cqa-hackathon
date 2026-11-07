@@ -4,7 +4,7 @@ import { esc, icon, fmtDate, toast, modal, $, $$ } from '../ui.js';
 import { state, refreshMeta, runEvaluation, isViewAlive } from '../state.js';
 import { computeScore, round2 } from '/lib/scoring.js';
 
-const COLORS = ['#14c26e', '#5fb8ff', '#ffb547', '#c9a2ff', '#3fd8e8', '#ff8fa3', '#9be15d'];
+const COLORS = ['#16a34a', '#0f5431', '#64748b', '#b45309', '#0369a1', '#9ca3af', '#475569'];
 const RULE_LABEL = {
   greeting: 'Приветствие и представление', needs: 'Уточняющие вопросы', identification: 'Идентификация', consultation: 'Полнота консультации',
   empathy: 'Эмпатия / вежливость', dialog: 'Ведение диалога', closing: 'Прощание', gross: 'Грубые нарушения', keywords: null,
@@ -43,12 +43,12 @@ export async function render(view, params, query, token) {
 function drawVersions(view) {
   $('#versions', view).innerHTML = `
     <div class="row" style="justify-content:space-between;margin-bottom:4px"><b>${t('versions')}</b>
-      <button class="btn btn-sm" id="new-cl">${icon('plus')} ${t('new_checklist')}</button></div>
+      <button class="btn btn-sm" id="new-cl">+ ${t('new_checklist')}</button></div>
     ${state.checklists.map((c) => {
       const sum = c.criteria.filter((x) => x.type !== 'flag').reduce((s, x) => s + Number(x.weight), 0);
       return `<div class="version ${c.id === selId ? 'sel' : ''}" data-id="${c.id}">
         <div class="v-name"><span>${esc(c.name)} <span class="muted mono">v${c.version}</span></span>${c.id === state.active_checklist_id ? `<span class="badge ok">${t('active')}</span>` : ''}</div>
-        <div class="v-meta">${c.criteria.length} ${t('criteria').toLowerCase()} · Σ ${sum} · ${fmtDate(c.created_at)}</div>
+        <div class="v-meta">${c.criteria.length} ${t('criteria').toLowerCase()}, ${t('sum').toLowerCase()} ${sum} · ${fmtDate(c.created_at)}</div>
         ${c.note ? `<div class="v-meta" style="font-style:italic">${esc(c.note)}</div>` : ''}
       </div>`;
     }).join('')}`;
@@ -69,12 +69,12 @@ function weightsHtml() {
   const sum = round2(scored.reduce((s, c) => s + Number(c.weight), 0));
   const color = (c) => COLORS[Math.max(0, draft.sections.findIndex((s) => s.id === c.section)) % COLORS.length];
   return `
-    <div class="card-head"><h3>${t('weights')}</h3><span class="w-sum" style="color:${sum === 100 ? 'var(--brand)' : 'var(--warn)'}">${t('sum')}: ${sum}${sum === 100 ? ' ✓' : ' ≠ 100'}</span></div>
+    <div class="card-head"><h3>${t('weights')}</h3><span class="w-sum" style="color:${sum === 100 ? 'var(--brand)' : 'var(--warn)'}">${t('sum')}: ${sum}${sum === 100 ? '' : ' ≠ 100'}</span></div>
     <div class="wbar">
       ${scored.map((c) => {
         const r = sc.rows.find((x) => x.criterion_id === c.id);
         const na = sandboxNA.has(c.id) && c.allow_na;
-        return `<div class="seg-w ${na ? 'na' : ''}" data-na="${c.id}" title="${esc(c.title)}: ${c.weight} → ${na ? 'N/A' : r.effective_weight}" style="flex-grow:${na ? 0.0001 : r.effective_weight};background:${color(c)}">${na ? '' : `${esc(c.code)} · ${fmtW(r.effective_weight)}`}</div>`;
+        return `<div class="seg-w ${na ? 'na' : ''}" data-na="${c.id}" title="${esc(c.title)}: ${c.weight} → ${na ? 'N/A' : r.effective_weight}" style="flex-grow:${na ? 0.0001 : r.effective_weight};background:${color(c)}">${na ? '' : `${fmtW(r.effective_weight)}`}</div>`;
       }).join('')}
     </div>
     <div class="w-legend">
@@ -94,7 +94,7 @@ function drawEditor(view) {
         <label class="field grow"><span>${t('cl_note')}</span><input class="input" data-k="note" value="${esc(draft.note)}" placeholder="напр. «Заменён критерий 05»"></label>
       </div>
       <div class="row" style="margin-top:14px;justify-content:space-between">
-        <div class="row">${dirty ? `<span class="badge warn">● ${t('unsaved')}</span>` : ''}</div>
+        <div class="row">${dirty ? `<span class="badge warn">${t('unsaved')}</span>` : ''}</div>
         <div class="row">
           ${selId && !isActive && !dirty ? `<button class="btn" id="activate">${icon('check')} ${t('make_active')}</button>` : ''}
           ${selId && !dirty ? `<button class="btn" id="apply">${icon('bolt')} ${t('apply_to')}</button>` : ''}
@@ -106,18 +106,18 @@ function drawEditor(view) {
     <div class="card" style="margin-top:14px" id="weights">${weightsHtml()}</div>
 
     <div class="card" style="margin-top:14px">
-      <div class="card-head"><h3>${t('sections')}</h3><button class="btn btn-sm" id="add-sec">${icon('plus')} ${t('add_section')}</button></div>
+      <div class="card-head"><h3>${t('sections')}</h3><button class="btn btn-sm" id="add-sec">+ ${t('add_section')}</button></div>
       <div class="row">${draft.sections.map((s, i) => `
-        <div class="row" style="gap:6px;padding:4px 6px 4px 10px;border-radius:12px;border:1px solid var(--line-2)">
-          <i style="width:10px;height:10px;border-radius:3px;background:${COLORS[i % COLORS.length]}"></i>
-          <input class="input" data-sec="${s.id}" value="${esc(s.title)}" style="border:0;background:transparent;padding:4px;width:${Math.max(10, s.title.length + 2)}ch">
-          ${draft.sections.length > 1 ? `<button class="btn btn-ghost btn-sm" data-delsec="${s.id}" title="×">${icon('x')}</button>` : ''}
+        <div class="sec-tag">
+          <i style="background:${COLORS[i % COLORS.length]}"></i>
+          <input class="input" data-sec="${s.id}" value="${esc(s.title)}" style="width:${Math.max(10, s.title.length + 2)}ch">
+          ${draft.sections.length > 1 ? `<button class="btn btn-ghost btn-sm ic" data-delsec="${s.id}" title="${t('cancel')}">${icon('x')}</button>` : ''}
         </div>`).join('')}</div>
     </div>
 
-    <div style="margin-top:18px" class="row"><h3 style="margin:0;font-size:15px">${t('criteria')} <span class="muted mono">· ${draft.criteria.length}</span></h3></div>
+    <div style="margin-top:18px" class="row"><h3 style="margin:0;font-size:16px;font-weight:700">${t('criteria')} <span class="muted" style="font-weight:400">(${draft.criteria.length})</span></h3></div>
     <div id="crits">${draft.criteria.map((c, i) => critEditor(c, i)).join('')}</div>
-    <button class="btn" id="add-crit" style="margin-top:12px;width:100%;border-style:dashed">${icon('plus')} ${t('add_criterion')}</button>
+    <button class="btn add-row" id="add-crit">+ ${t('add_criterion')}</button>
   `;
   bindEditor(view);
 }
@@ -129,15 +129,15 @@ function critEditor(c, i) {
   return `<div class="c-editor ${isOpen ? 'open' : ''}" data-ci="${i}">
     <div class="c-row" data-toggle="${c.id}">
       <span class="c-code">${esc(c.code)}</span>
-      <div style="min-width:0"><div class="c-title"><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${COLORS[secIdx % COLORS.length]};margin-right:8px"></i>${esc(c.title)}</div>
+      <div style="min-width:0"><div class="c-title"><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${COLORS[secIdx % COLORS.length]};margin-right:8px;vertical-align:1px"></i>${esc(c.title)}</div>
         <div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.description)}</div></div>
-      <span class="badge">${typeLabel}${c.allow_na ? ' · N/A' : ''}</span>
-      <span class="mono" style="font-weight:800;min-width:42px;text-align:right">${c.type === 'flag' ? '⚑' : c.weight}</span>
+      <span class="badge">${typeLabel}${c.allow_na ? ', N/A' : ''}</span>
+      <span class="mono c-w">${c.type === 'flag' ? '—' : c.weight}</span>
       <div class="tools">
-        <button class="btn btn-ghost btn-sm" data-act="up" title="↑" ${i === 0 ? 'disabled' : ''}>${icon('up')}</button>
-        <button class="btn btn-ghost btn-sm" data-act="down" title="↓" ${i === draft.criteria.length - 1 ? 'disabled' : ''}>${icon('down')}</button>
-        <button class="btn btn-ghost btn-sm" data-act="dup" title="⧉">${icon('copy')}</button>
-        <button class="btn btn-ghost btn-sm" data-act="del" title="×" style="color:var(--no)">${icon('trash')}</button>
+        <button class="btn btn-ghost btn-sm ic" data-act="up" title="↑" ${i === 0 ? 'disabled' : ''}>${icon('up')}</button>
+        <button class="btn btn-ghost btn-sm ic" data-act="down" title="↓" ${i === draft.criteria.length - 1 ? 'disabled' : ''}>${icon('down')}</button>
+        <button class="btn btn-ghost btn-sm ic" data-act="dup" title="Копировать">${icon('copy')}</button>
+        <button class="btn btn-ghost btn-sm ic" data-act="del" title="Удалить" style="color:var(--no)">${icon('trash')}</button>
       </div>
     </div>
     ${isOpen ? `<div class="c-body">
@@ -156,8 +156,8 @@ function critEditor(c, i) {
       <label class="field full"><span>${t('c_desc')}</span><textarea class="textarea" data-f="description" rows="2">${esc(c.description)}</textarea></label>
       ${c.allow_na && c.type !== 'flag' ? `<label class="field full"><span>${t('c_na')}</span><textarea class="textarea" data-f="na_rule" rows="2">${esc(c.na_rule)}</textarea></label>` : ''}
       ${c.type === 'scale' ? `<div class="field full"><span>${t('c_scale')}</span><div class="scale-rows">
-        ${(c.scale || []).map((s, si) => `<div class="scale-row"><input class="input mono" data-step="${si}" data-sf="value" value="${s.value}"><input class="input" data-step="${si}" data-sf="label" value="${esc(s.label)}"><button class="btn btn-ghost btn-sm" data-delstep="${si}">${icon('x')}</button></div>`).join('')}
-        <button class="btn btn-sm" data-addstep style="align-self:flex-start">${icon('plus')} ${t('add_step')}</button></div></div>` : ''}
+        ${(c.scale || []).map((s, si) => `<div class="scale-row"><input class="input mono" data-step="${si}" data-sf="value" value="${s.value}"><input class="input" data-step="${si}" data-sf="label" value="${esc(s.label)}"><button class="btn btn-ghost btn-sm ic" data-delstep="${si}">${icon('x')}</button></div>`).join('')}
+        <button class="btn btn-sm" data-addstep style="align-self:flex-start">+ ${t('add_step')}</button></div></div>` : ''}
       <label class="field"><span>${t('c_rule')}</span><select class="select" data-f="rule">${state.rule_types.map((r) => `<option value="${r}" ${r === c.rule ? 'selected' : ''}>${RULE_LABEL[r] || t('rule_keywords')}</option>`).join('')}</select></label>
       ${c.rule === 'keywords' ? `<label class="field"><span>${t('c_keywords')}</span><input class="input" data-f="keywords" value="${esc(c.keywords || '')}" placeholder="подождите, минуту, one moment, күте тұрыңыз"></label>` : '<div></div>'}
     </div>` : ''}
