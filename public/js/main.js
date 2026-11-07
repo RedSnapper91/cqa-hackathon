@@ -7,6 +7,7 @@ import * as dialog from './views/dialog.js';
 import * as checklists from './views/checklists.js';
 import * as appeals from './views/appeals.js';
 import * as importer from './views/importer.js';
+import * as guide from './views/guide.js';
 import { api } from './api.js';
 
 const NAV = [
@@ -15,6 +16,7 @@ const NAV = [
   { key: 'checklists', href: '#/checklists', icon: 'checklist' },
   { key: 'appeals', href: '#/appeals', icon: 'appeal' },
   { key: 'import', href: '#/import', icon: 'import' },
+  { key: 'guide', href: '#/guide', icon: 'guide' },
 ];
 
 const ROUTES = {
@@ -24,6 +26,7 @@ const ROUTES = {
   checklists: { view: checklists, nav: 'checklists' },
   appeals: { view: appeals, nav: 'appeals' },
   import: { view: importer, nav: 'import' },
+  guide: { view: guide, nav: 'guide' },
 };
 
 function parseHash() {
@@ -57,6 +60,9 @@ function drawChrome() {
   const theme = document.documentElement.dataset.theme;
   $('#theme-toggle').innerHTML = icon(theme === 'dark' ? 'sun' : 'moon');
   $('#theme-toggle').title = t('theme');
+  const help = $('#help-link');
+  help.href = '#/guide';
+  help.innerHTML = `${icon('guide')}<span>${t('help')}</span>`;
 }
 
 let cleanup = null;
@@ -66,6 +72,7 @@ async function route() {
   const { name, params, query } = parseHash();
   const r = ROUTES[name] || ROUTES[''];
   drawNav(r.nav);
+  if (name) guide.markSeen(name);
   $('#page-title').textContent = t('nav_' + r.nav);
   $('#page-sub').textContent = t('sub_' + r.nav);
   if (typeof cleanup === 'function') cleanup();

@@ -348,11 +348,13 @@ route('POST', '/api/conversations/upload', async (req, res) => {
       transcript: parseTextTranscript(body.text),
       audio_url: body.audio_url || null,
     }];
-  } else {
-    const p = body.payload ?? body;
+  }
+  const p = body.payload ?? body;
+  if (!body.text) {
+    if (p && p.isSuccess === false) return fail(res, 400, `Файл содержит ответ API с ошибкой: ${p.error || 'isSuccess = false'}`);
     records = p?.data?.records || p?.records || (Array.isArray(p) ? p : [p]);
   }
-  const group = String(body.group_id || 'UPLOAD');
+  const group = String(body.group_id || p?.data?.dataset_group_id || 'UPLOAD');
   const ids = [];
   for (const r of records) {
     const c = normalizeRecord(r, group, 'upload');
@@ -362,7 +364,7 @@ route('POST', '/api/conversations/upload', async (req, res) => {
   }
   db().datasets[group] = { group_id: group, count: Object.values(db().conversations).filter((c) => c.group_id === group).length, loaded_at: store.now(), source: 'upload' };
   store.saveNow();
-  json(res, 201, { ids });
+  json(res, 201, { ids, group_id: group });
 });
 route('GET', '/api/audio/:id', async (req, res, p) => {
   const c = db().conversations[decodeURIComponent(p.id)];

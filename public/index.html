@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="ru" data-theme="dark">
+<html lang="ru" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CQA · Качество диалогов</title>
+  <title>Freedom CQA · Качество диалогов</title>
   <meta name="description" content="Conversation Quality Analytics — оценка работы операторов по чек-листу, апелляции и пересмотр." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2314C26E'/%3E%3Cpath d='M8 17h3l2-6 3 12 3-9 2 3h3' fill='none' stroke='%23051a0e' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="/img/freedom-shield.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/app.css" />
   <script>
     // Host config. In a Dynamics 365 web resource set apiBase to the CQA service URL.
@@ -22,14 +22,10 @@
 <body>
   <div id="cqa-app" class="app">
     <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#/">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><path d="M7 17h3.5l2.2-6.5 3.3 13 3.2-9.5 2 3H25" /></svg>
-        </span>
-        <span class="brand-text">
-          <strong>CQA</strong>
-          <small>Freedom Broker · Quality</small>
-        </span>
+      <a class="brand" href="#/" aria-label="Freedom CQA">
+        <img class="brand-logo logo-on-light" src="/img/freedom-logo.svg" alt="Freedom" width="126" height="32" />
+        <img class="brand-logo logo-on-dark" src="/img/freedom-logo-white.svg" alt="Freedom" width="126" height="32" />
+        <span class="brand-product">CQA <small>Контроль качества</small></span>
       </a>
       <nav class="nav" id="nav"></nav>
       <div class="sidebar-foot" id="engine-card"></div>
@@ -42,6 +38,7 @@
           <span id="page-sub" class="muted"></span>
         </div>
         <div class="topbar-actions">
+          <a class="btn btn-sm btn-ghost help-link" href="#/" id="help-link"></a>
           <a class="pill pill-checklist" id="active-checklist" href="#/checklists" title=""></a>
           <div class="seg" id="lang-switch" role="group" aria-label="Language"></div>
           <button class="icon-btn" id="theme-toggle" type="button" aria-label="Theme"></button>
