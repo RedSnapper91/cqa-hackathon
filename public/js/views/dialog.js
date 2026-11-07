@@ -234,7 +234,7 @@ function result(ev) {
           ${changed ? `<div class="row" style="gap:8px"><span class="muted" style="font-size:12px">${t('original')}</span><span class="strike">${fmtScore(os.total)}</span><span class="arrow">→</span><b class="mono" style="color:var(--info)">${fmtScore(fs.total)}</b><span class="muted" style="font-size:12px">${t('final')}</span></div>` : ''}
           <div style="font-weight:800;font-size:15px">${esc(ev.checklist.name)} <span class="muted">v${ev.checklist.version}</span></div>
           <div class="row" style="gap:6px">
-            <span class="badge ${ev.engine === 'model' ? 'ok' : 'warn'}">${icon('cpu')} ${ev.engine === 'model' ? esc(ev.model) : t('engine_stub')}</span>
+            <span class="badge ${ev.engine === 'model' ? 'ok' : 'info'}">${icon('cpu')} ${ev.engine === 'model' ? esc(ev.model) : t('engine_stub')}</span>
             <span class="badge">${fmtDate(ev.created_at)}</span>
             ${fs.na_count ? `<span class="badge">N/A × ${fs.na_count}</span>` : ''}
           </div>

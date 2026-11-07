@@ -68,9 +68,9 @@ export async function render(view, params, query, token) {
         </div>
         <div class="card">
           <div class="card-head"><h3>${icon('cpu').replace('<svg', '<svg style="width:17px;height:17px;stroke:var(--warn);fill:none;stroke-width:2;vertical-align:-3px"')} ${t('imp_model')}</h3>
-            <span class="badge ${engine?.mode === 'model' ? 'ok' : 'warn'}">${engine?.mode === 'model' ? esc(engine.label) : t('engine_stub')}</span></div>
+            <span class="badge ${engine?.mode === 'model' ? 'ok' : 'info'}">${engine?.mode === 'model' ? esc(engine.label) : t('engine_stub')}</span></div>
           <p class="muted" style="margin:0 0 12px">${t('imp_model_text')}</p>
-          <pre class="code">${esc(CONTRACT)}</pre>
+          <details class="it-block"><summary>${t('it_contract')}</summary><pre class="code">${esc(CONTRACT)}</pre></details>
         </div>
       </div>
     </div>`;
