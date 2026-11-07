@@ -1,16 +1,23 @@
-# Node / CQA web app
-node_modules/
-data/db.json
-data/db.json.tmp
-# signed organizer links: never commit
-config.local.json
-data/dataset-*.json
-
-# Python model service
-.venv/
-__pycache__/
-
-# secrets
 .env
 .env.*
 !.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.db
+*.db-*
+*.sqlite*
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.DS_Store
+.private/
+*.tsbuildinfo
+data/db.json
+data/db.json.tmp
+config.local.json
+data/dataset-*.json

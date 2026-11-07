@@ -1,0 +1,12 @@
+# Five-minute defense
+
+Use a locally stored evaluation from a real provider before the defense. The current build has the actual 65 DEV records imported locally, but no Gemini key was available during implementation, so it has **no fabricated live evaluations**. To perform the full live scoring demo, configure a key, restart, and evaluate chosen permitted text chats before going offline. Import/read/edit flows work without a key. The automated E2E test demonstrates the whole workflow with a separate test provider and a prominent TEST MODE banner; never present it as model accuracy.
+
+1. **Minute 1:** open Overview, show actual language/channel counts. Open Conversations and select a RU/KZ/EN chat. Explain that bot/system messages are context and original timestamps/text stay intact.
+2. **Minutes 2–3:** choose v1 and Run evaluation (or open the preprocessed report). Show each criterion, weighted contribution, exact evidence chip and checked interval. Click evidence to highlight the original message. Show a genuine justified N/A when present, the global normalized score, and the separate gross flag. Do not fabricate an N/A example in an unseen DEV conversation.
+3. **Minute 4:** click Appeal criterion, submit a reason. Open Appeals & review, switch to Reviewer mode, inspect the original transcript/evidence, and confirm/change with a required reason. Show the recomputed total and preserved original plus history.
+4. **Minute 5:** open Checklist studio. Expand a criterion and replace its title/instructions (and scale/weight if needed). Save as new version. Return to the conversation, choose v2, evaluate, and open Compare versions. v1 retains its original checklist and reviewed total.
+
+For the hour-23 control release, use Import dataset, enter the announced new group ID, import, select the saved version, filter to permitted chats, and Evaluate all matching. The group and new criteria require no source edits. Failed runs can be retried from a batch or individually via Re-evaluate. Batch data and reports persist across reloads; processing interrupted by a server restart becomes visibly failed and retryable.
+
+For synthetic exploration, use Import dataset → Load synthetic demo, or `python scripts/seed_demo_data.py`. These 10 examples are not organizer data and have no prerecorded AI ratings. The synthetic call has an intentionally unavailable example recording link to exercise player/error/fallback UI. Actual call recording playback depends on remote permissions and URL lifetime.

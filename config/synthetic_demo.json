@@ -1,0 +1,445 @@
+{
+  "error": "",
+  "isSuccess": true,
+  "data": {
+    "dataset_group_id": "SYNTHETIC_DEMO",
+    "total_records": 10,
+    "records": [
+      {
+        "conversation_id": "demo-ru-001",
+        "language": "RU",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Здравствуйте! Подскажите, где посмотреть тарифы?"
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Здравствуйте! Меня зовут Алия. Действующие тарифы можно посмотреть на официальном сайте в разделе «Тарифы»."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Спасибо, нашёл."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Рада помочь. Если появятся вопросы, обращайтесь. До свидания!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-ru-002",
+        "language": "RU",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "У меня не открывается приложение, это мешает работе."
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Здравствуйте, я Дана. Понимаю, что это неудобно. Какое сообщение об ошибке вы видите?"
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Пишет «нет подключения»."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Проверьте подключение к сети и повторите вход. Если ошибка останется, передам запрос технической поддержке."
+          },
+          {
+            "timestamp": "00:46",
+            "speaker": "client",
+            "text": "Хорошо, попробую."
+          },
+          {
+            "timestamp": "01:57",
+            "speaker": "operator",
+            "text": "Итак, сначала проверим сеть. Могу ещё чем-то помочь? До свидания!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-ru-003",
+        "language": "RU",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Здравствуйте, хочу узнать, как обратиться в поддержку."
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Здравствуйте! Алия, служба поддержки. Напишите через раздел «Помощь» в приложении."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Спасибо."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Пожалуйста. До свидания!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-kz-001",
+        "language": "KZ",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Сәлеметсіз бе! Тарифтерді қайдан көруге болады?"
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Сәлеметсіз бе! Менің атым Айдана. Қолданыстағы тарифтерді ресми сайттың «Тарифтер» бөлімінен көре аласыз."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Рақмет, таптым."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Көмектескеніме қуаныштымын. Қосымша сұрақтарыңыз бар ма? Сау болыңыз!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-kz-002",
+        "language": "KZ",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Қолданба ашылмайды, жұмыс істей алмай отырмын."
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Сәлеметсіз бе, мен Данамын. Бұл қолайсыздықты түсінемін. Қандай қате көрсетіліп тұр?"
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Байланыс жоқ деп тұр."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Интернет байланысын тексеріп, қайта кіріп көріңіз. Қате қайталанса, техникалық қолдауға сұрау жіберемін."
+          },
+          {
+            "timestamp": "00:46",
+            "speaker": "client",
+            "text": "Жақсы, байқап көремін."
+          },
+          {
+            "timestamp": "01:57",
+            "speaker": "operator",
+            "text": "Алдымен желіні тексереміз. Тағы көмегім қажет пе? Сау болыңыз!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-kz-003",
+        "language": "KZ",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Қолдау қызметіне қалай жазуға болады?"
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Сәлеметсіз бе! Мен Алия, қолдау маманымын. Қолданбадағы «Көмек» бөлімін ашыңыз."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Рақмет."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Оқасы жоқ. Сау болыңыз!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-en-001",
+        "language": "EN",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "Hello, where can I find the fee schedule?"
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Hello! My name is Aliya. You can find the current fee schedule in the Fees section of the official website."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Thanks, found it."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Happy to help. Is there anything else I can help with? Goodbye!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-en-002",
+        "language": "EN",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "The app will not open and I cannot get my work done."
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Hello, I am Dana. I understand that this is inconvenient. What error message do you see?"
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "It says no connection."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "Please check your network and try signing in again. If it persists, I can pass your request to technical support."
+          },
+          {
+            "timestamp": "00:46",
+            "speaker": "client",
+            "text": "Okay, I will try."
+          },
+          {
+            "timestamp": "01:57",
+            "speaker": "operator",
+            "text": "We will start with the network check. Can I help with anything else? Goodbye!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-en-003",
+        "language": "EN",
+        "channel": "agent chat",
+        "audio_url": null,
+        "transcript": [
+          {
+            "timestamp": "00:00",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation opened"
+          },
+          {
+            "timestamp": "00:01",
+            "speaker": "bot",
+            "text": "SYNTHETIC DEMO · connecting to an operator"
+          },
+          {
+            "timestamp": "00:02",
+            "speaker": "client",
+            "text": "How can I contact support?"
+          },
+          {
+            "timestamp": "00:13",
+            "speaker": "operator",
+            "text": "Hello! I am Aliya from support. Open the Help section in the app."
+          },
+          {
+            "timestamp": "00:24",
+            "speaker": "client",
+            "text": "Thank you."
+          },
+          {
+            "timestamp": "00:35",
+            "speaker": "operator",
+            "text": "You are welcome. Goodbye!"
+          },
+          {
+            "timestamp": "02:30",
+            "speaker": "system",
+            "text": "SYNTHETIC DEMO · conversation closed"
+          }
+        ]
+      },
+      {
+        "conversation_id": "demo-call-en-001",
+        "language": "EN",
+        "channel": "voice call",
+        "audio_url": "https://example.invalid/synthetic-demo-recording.wav",
+        "transcript": [
+          {
+            "timestamp": "2026-11-01T10:00:00+05:00",
+            "speaker": "client",
+            "text": "Synthetic call transcript: where can I find support?"
+          },
+          {
+            "timestamp": "2026-11-01T10:00:04+05:00",
+            "speaker": "operator",
+            "text": "Hello, my name is Dana. Use the Help section in the app. Goodbye."
+          }
+        ]
+      }
+    ]
+  }
+}

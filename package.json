@@ -1,15 +1,16 @@
 {
   "name": "cqa-freedom",
   "version": "1.0.0",
-  "description": "Conversation Quality Analytics — Freedom Broker CQA hackathon prototype",
+  "description": "Conversation Quality Analytics \u2014 Freedom Broker CQA hackathon prototype",
   "type": "module",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "test": "node tests/scoring.test.js"
+    "start": "node scripts/start-integrated.mjs",
+    "start:frontend": "node server.js",
+    "test": "node tests/scoring.test.js && node --test tests/gateway.test.js",
+    "test:first-api": "node scripts/first-api-test.mjs"
   }
 }
