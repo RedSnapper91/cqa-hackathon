@@ -1,0 +1,11 @@
+{
+  "conversation_id": "example-001",
+  "language": "EN",
+  "transcript": [
+    {"timestamp": "00:00", "speaker": "operator", "text": "Hello, I am Aigerim. How can I help?"},
+    {"timestamp": "00:05", "speaker": "client", "text": "How do I reset my password?"}
+  ],
+  "checklist": [
+    {"id": "greeting", "instruction": "Check whether the operator greeted the client and introduced themselves in the first reply.", "weight": 10}
+  ]
+}
