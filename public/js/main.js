@@ -141,13 +141,42 @@ async function route() {
 
 export function rerender() { route(); }
 
+// Language switch: a short loading state (~1.2 s) so the change reads as deliberate.
+const LANG_LOADING = { ru: 'Переключаем язык…', en: 'Switching language…', kz: 'Тіл ауыстырылуда…' };
+const LANG_DELAY_MS = 1200;
+let langBusy = false;
+async function switchLang(next) {
+  if (langBusy || next === getLang()) return;
+  langBusy = true;
+  const root = document.documentElement;
+  const ov = document.createElement('div');
+  ov.className = 'lang-loading';
+  ov.setAttribute('role', 'status');
+  ov.setAttribute('aria-live', 'polite');
+  ov.style.setProperty('--ll-ms', `${LANG_DELAY_MS}ms`);
+  ov.innerHTML = `<div class="ll-bar"><i></i></div><div class="ll-box"><span class="spin"></span><span>${esc(LANG_LOADING[next] || LANG_LOADING.ru)}</span></div>`;
+  document.body.appendChild(ov);
+  root.setAttribute('aria-busy', 'true');
+  $('#lang-switch').querySelectorAll('button').forEach((b) => b.classList.toggle('pending', b.dataset.lang === next));
+  void ov.offsetWidth; // start the transitions from their initial state
+  ov.classList.add('show');
+  try {
+    await new Promise((r) => setTimeout(r, LANG_DELAY_MS));
+    setLang(next);
+    drawChrome();
+    await route();
+  } finally {
+    ov.classList.add('done');
+    ov.classList.remove('show');
+    setTimeout(() => ov.remove(), 220);
+    root.removeAttribute('aria-busy');
+    langBusy = false;
+  }
+}
+
 document.addEventListener('click', (e) => {
   const lb = e.target.closest('[data-lang]');
-  if (lb && lb.closest('#lang-switch')) {
-    setLang(lb.dataset.lang);
-    drawChrome();
-    route();
-  }
+  if (lb && lb.closest('#lang-switch')) switchLang(lb.dataset.lang);
 });
 $('#theme-toggle').addEventListener('click', () => {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
