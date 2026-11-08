@@ -3,7 +3,7 @@
   "team_name": "RedSnapper91 / cqa-hackathon",
   "model": {
     "mode": "external_api",
-    "name": "gemini-3.8-flash"
+    "name": "gemini-3.6-flash, gemini-3.8-flash"
   },
   "results": [
     {
@@ -87,52 +87,552 @@
     },
     {
       "conversation_id": "p2-en-002",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор поздоровался и представился в первом сообщении.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": null,
+          "rationale": "Запрос клиента содержал всю необходимую информацию с самого начала, дополнительное уточнение не требовалось.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Вопрос касался стандартной навигации в приложении и информации в брокерском отчёте, идентификация клиента не требовалась.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 20,
+          "rationale": "Оператор полностью и подробно ответил на все вопросы клиента о получении брокерского отчета, поиске тарифного плана и просмотре текущего тарифа.",
+          "evidence_turns": [
+            10,
+            12,
+            14,
+            17,
+            19
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор общался вежливо и корректно на протяжении всего диалога.",
+          "evidence_turns": [
+            10,
+            21
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 10,
+          "rationale": "Диалог велся структурно и понятно, ответы оператора были быстрыми и грамотными.",
+          "evidence_turns": [
+            10,
+            12,
+            14,
+            17,
+            19
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": true,
+          "rationale": "Оператор подвёл итог диалога и попрощался с клиентом.",
+          "evidence_turns": [
+            21
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушения не обнаружены.",
+          "evidence_turns": [
+            10,
+            21
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 100.0,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-kz-001",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор бірінші жауабында клиенттің тілінде амандасып, өзін таныстырды.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": true,
+          "rationale": "Оператор ақпаратты анықтау үшін аударым жасалатын валютаны нақтылап сұрады.",
+          "evidence_turns": [
+            10,
+            11
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Клиенттің сұрағы қосымшадағы деректемелерді табу бойынша жалпы навигацияға қатысты болғандықтан, сәйкестендіру талап етілмейді.",
+          "evidence_turns": [
+            1,
+            13
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 20,
+          "rationale": "Оператор клиентке қосымшада деректемелерді қалай табу және жүктеу керектігін толық әрі дұрыс түсіндірді, сұрақ толығымен жабылды.",
+          "evidence_turns": [
+            13
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор әдепті және клиентке бағытталған диалог жүргізді.",
+          "evidence_turns": [
+            10,
+            15
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 10,
+          "rationale": "Жауаптар түсінікті, сауатты және диалог реті логикалық тұрғыдан дұрыс сақталған.",
+          "evidence_turns": [
+            10,
+            13
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": false,
+          "rationale": "Оператор қоштасты, бірақ қосымша көмек ұсынған жоқ және қорытынды жасамады.",
+          "evidence_turns": [
+            15
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушений не выявлено.",
+          "evidence_turns": [
+            10,
+            15
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 93.75,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-kz-002",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор бірінші жауабында клиент тілінде амандасып, өзін таныстырды.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": false,
+          "rationale": "Оператор өтінімнің қабылданбау себебін және тикерді анықтамады, тексеру жүргізбеді.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Чатта құпия ақпарат ашылған жоқ және сәйкестендіруді қажет ететін әрекеттер жасалған жоқ.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 0,
+          "rationale": "Оператор клиентке қабылданбаған («отклонён») өтінім орындалды деп қате ақпарат берді және маңызды сұрақты шешпеді.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": false,
+          "rationale": "Оператор клиенттің мәселесін шешуге тырыспады және тексеруден бас тартып, бұрыс жауап берді.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 4,
+          "rationale": "Оператордың қайшылықты Тұжырымдамасына байланысты клиент қайта сұрауға мәжбүр болды.",
+          "evidence_turns": [
+            10,
+            11
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": false,
+          "rationale": "Оператор сұраққа жауап бермей, қоштаспастан чатты жауып тастады.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубые нарушения (оскорбления, платные услуги в обход компании, разглашение конфиденциальных данных) не выявлены.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 20.0,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-kz-003",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор бірінші жауабында тұтынушы тілінде амандасып, өзін таныстырды.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": null,
+          "rationale": "Клиент басынан-ақ сұрақты толық қойды, оператор тарапынан қосымша нақтылау талап етілмеді.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Сұрақ шот функциялары туралы жалпы ақпараттық сипатта болды, сәйкестендіру қажет емес.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 0,
+          "rationale": "Оператор компания ережелерін бұзып, ақшаны жеке өзіне аударуды ұсынды, бұл мүлдем қате және бұрыс ұсыныс болып табылады.",
+          "evidence_turns": [
+            12
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор диалог барысында сөйлесу мәнерін сыпайы сақтады.",
+          "evidence_turns": [
+            10,
+            14
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 7,
+          "rationale": "Оператор орынсыз жеке аударым ұсынып диалог барысында байқалатын сбой жасады, бірақ клиент бас тартып, жауапты түсіне алды.",
+          "evidence_turns": [
+            12,
+            13
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": true,
+          "rationale": "Оператор әрі қарай көмек ұсынып, қоштасты.",
+          "evidence_turns": [
+            14
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": true,
+          "rationale": "Оператор инвестициялау үшін компанияны айналып өтіп, өзіне жеке аударым жасауды ұсынды.",
+          "evidence_turns": [
+            12
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 62.31,
+        "critical_flag": true
+      }
     },
     {
       "conversation_id": "p2-kz-004",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор бірінші жауабында клиент тілінде амандасып, өзін таныстырды.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": null,
+          "rationale": "Клиент сұрағын қоймастан чаттан шығып кетті, нақтылау талап етілмеді.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Идентификацияны талап ететін сұрақ қойылмады.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": null,
+          "rationale": "Клиент сұрағын тұжырымдамай тұрып чат аяқталды.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор сыпайы әрі клиентке бағдарланған амандасу репликасын берді.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 10,
+          "rationale": "Реплика сауатты, жүйелі және түсінікті жазылған.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": null,
+          "rationale": "Клиент сұрағын жазбай чаттан шығып кетті, операторда диалогты аяқтау мүмкіндігі болмады.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушений со стороны оператора не выявлено.",
+          "evidence_turns": [
+            10
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 100.0,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-ru-001",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор поздоровался и представился в своем первом ответе.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": null,
+          "rationale": "Запрос клиента содержал всю необходимую информацию, уточнения не требовались.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Обращение клиента содержало общий вопрос по навигации в личном кабинете и не требовало идентификации.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 15,
+          "rationale": "Основной вопрос решён (как посмотреть тариф в веб-версии), однако оператор упустил второстепенную деталь (указать название раздела в брокерском отчёте).",
+          "evidence_turns": [
+            1,
+            10
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор общался вежливо и корректно.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 10,
+          "rationale": "Ответы ясные и последовательные, сбоев и неоправданных задержек не зафиксировано.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": true,
+          "rationale": "Оператор предложил дальнейшую помощь и попрощался с клиентом.",
+          "evidence_turns": [
+            12
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушений не выявлено.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 92.31,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-ru-002",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор поздоровалась («Здравствуйте») и представилась («я Анна») в первом же своем сообщении.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": null,
+          "rationale": "Данных для ответа хватало с самого начала; дополнительные уточнения оператору не требовались.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Запрос был навигационным/процедурным и не требовал идентификации клиента.",
+          "evidence_turns": [
+            1
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 10,
+          "rationale": "Оператор ответила на вопрос о месте подачи поручения («Меню → Поручения → Персональные данные → Изменение сведений»), но полностью проигнорировала вопрос клиента о том, когда и как повторять попытку вывода средств.",
+          "evidence_turns": [
+            10,
+            11,
+            12,
+            14
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": false,
+          "rationale": "Клиент сообщил о раздосадованности и сложности («Второй день не могу вывести деньги», «Уже второй день не получается»), но оператор проигнорировала эту проблему, дала нерелевантный ответ и попрощалась.",
+          "evidence_turns": [
+            12,
+            14
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 4,
+          "rationale": "Из-за невнимательного ответа оператора («Для обновления используется указанное меню») клиенту пришлось повторно уточнять вопрос о выводе денег.",
+          "evidence_turns": [
+            11,
+            12,
+            13
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": true,
+          "rationale": "Оператор предложила дальнейшую помощь («Если появятся ещё вопросы, напишите нам») и попрощалась («До свидания»).",
+          "evidence_turns": [
+            14
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушений (оскорбления, предложения сторонних платных услуг, разглашение конфиденциальных данных) со стороны оператора не выявлено.",
+          "evidence_turns": [
+            10,
+            14
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 47.69,
+        "critical_flag": false
+      }
     },
     {
       "conversation_id": "p2-ru-003",
@@ -215,10 +715,82 @@
     },
     {
       "conversation_id": "p2-ru-004",
-      "status": "error",
-      "criteria": [],
-      "score": null,
-      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": false,
+          "rationale": "Оператор не поздоровался и не представился в первом сообщении.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": false,
+          "rationale": "Оператор не уточнил у клиента необходимую информацию для решения проблемы с выводом средств.",
+          "evidence_turns": [
+            1,
+            10
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": false,
+          "rationale": "Оператор сообщил о наличии ограничения на счёте клиента до проведения идентификации.",
+          "evidence_turns": [
+            12
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 5,
+          "rationale": "Оператор дал общую подсказку по ограничению на вывод, но не помог решить проблему и не объяснил клиенту, как действовать.",
+          "evidence_turns": [
+            12,
+            14
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": false,
+          "rationale": "Оператор общался небрежно и не проявлял клиентоориентированности при обращении клиента с ошибкой вывода средств.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 4,
+          "rationale": "Из-за неясных формулировок оператора клиенту пришлось переспрашивать.",
+          "evidence_turns": [
+            10,
+            11
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": false,
+          "rationale": "Оператор не подвел итог, не предложил помощь и не попрощался перед завершением диалога.",
+          "evidence_turns": [
+            14,
+            15
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубые нарушения в диалоге отсутствуют.",
+          "evidence_turns": [
+            10,
+            15
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 11.0,
+        "critical_flag": false
+      }
     }
   ]
 }
