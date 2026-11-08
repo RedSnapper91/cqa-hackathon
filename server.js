@@ -39,6 +39,11 @@ async function readBody(req) {
   }
 }
 export function uploadPayload(body) {
+  if (body.payload?.isSuccess === false)
+    throw new BackendError(
+      422,
+      `File contains a failed API response: ${body.payload.error || "isSuccess = false"}`,
+    );
   if (body.payload?.data?.records) return body.payload;
   let records;
   if (body.text) {

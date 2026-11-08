@@ -1,7 +1,7 @@
 // Shared client state + long-running evaluation jobs.
-import { api } from "./api.js";
-import { t } from "./i18n.js";
-import { esc, toast, $ } from "./ui.js";
+import { api } from './api.js';
+import { t } from './i18n.js';
+import { esc, toast, $ } from './ui.js';
 
 export const state = {
   health: null,
@@ -15,11 +15,7 @@ const listeners = new Set();
 export const onMeta = (fn) => listeners.add(fn);
 
 export async function refreshMeta() {
-  const [h, cl, st] = await Promise.all([
-    api.health(),
-    api.checklists(),
-    api.stats().catch(() => null),
-  ]);
+  const [h, cl, st] = await Promise.all([api.health(), api.checklists(), api.stats().catch(() => null)]);
   state.health = h;
   state.checklists = cl.checklists;
   state.active_checklist_id = cl.active_checklist_id;
@@ -29,16 +25,11 @@ export async function refreshMeta() {
   return state;
 }
 
-export const activeChecklist = () =>
-  state.checklists.find((c) => c.id === state.active_checklist_id) ||
-  state.checklists[0];
+export const activeChecklist = () => state.checklists.find((c) => c.id === state.active_checklist_id) || state.checklists[0];
 export const checklistOptions = (selected = state.active_checklist_id) =>
   state.checklists
-    .map(
-      (c) =>
-        `<option value="${c.id}" ${c.id === selected ? "selected" : ""}>${esc(c.name)} · v${c.version}${c.id === state.active_checklist_id ? " ★" : ""}</option>`,
-    )
-    .join("");
+    .map((c) => `<option value="${c.id}" ${c.id === selected ? 'selected' : ''}>${esc(c.name)}, v${c.version}${c.id === state.active_checklist_id ? ` (${t('active')})` : ''}</option>`)
+    .join('');
 
 /**
  * Run an evaluation. One dialog → synchronous; many → background job with a progress bar.
@@ -48,14 +39,14 @@ export async function runEvaluation(body) {
   const r = await api.evaluate(body);
   if (r.evaluation) return { evaluations: [r.evaluation] };
   return new Promise((resolve, reject) => {
-    const bar = document.createElement("div");
-    bar.className = "jobbar";
+    const bar = document.createElement('div');
+    bar.className = 'jobbar';
     document.body.appendChild(bar);
     const draw = (j) => {
       const pct = j.total ? Math.round((j.done / j.total) * 100) : 0;
       bar.innerHTML = `<div class="row" style="justify-content:space-between">
-          <b>${j.status === "done" ? "✓ " + t("job_done") : '<span class="spin" style="color:var(--brand);vertical-align:-3px"></span>&nbsp; ' + t("job_running")}</b>
-          <span class="mono">${j.done} / ${j.total}${j.failed ? ` · ${j.failed} ${t("errors")}` : ""}</span>
+          <b style="font-weight:600">${j.status === 'done' ? t('job_done') : '<span class="spin" style="color:var(--brand);vertical-align:-2px"></span>&nbsp; ' + t('job_running')}</b>
+          <span class="muted mono">${j.done} / ${j.total}${j.failed ? ` · ${j.failed} ${t('errors')}` : ''}</span>
         </div><div class="progress"><i style="width:${pct}%"></i></div>`;
     };
     draw(r);
@@ -63,23 +54,19 @@ export async function runEvaluation(body) {
       try {
         const j = await api.job(r.id);
         draw(j);
-        if (j.status === "done") {
+        if (j.status === 'done') {
           setTimeout(() => bar.remove(), 1400);
-          if (j.failed)
-            toast(
-              `${j.failed} ${t("errors")}: ${j.errors[0]?.error || ""}`,
-              "err",
-            );
+          if (j.failed) toast(`${j.failed} ${t('errors')}: ${j.errors[0]?.error || ''}`, 'err');
           await refreshMeta();
           if (j.failed && !j.evaluations?.length) {
-            reject(new Error(j.errors?.[0]?.error || "Evaluation failed"));
+            reject(new Error(j.errors?.[0]?.error || 'Evaluation failed'));
             return;
           }
           resolve(j);
           return;
         }
       } catch (e) {
-        toast(e.message, "err");
+        toast(e.message, 'err');
       }
       setTimeout(poll, 350);
     };
@@ -87,4 +74,4 @@ export async function runEvaluation(body) {
   });
 }
 
-export const isViewAlive = (token) => $("#view").dataset.token === token;
+export const isViewAlive = (token) => $('#view').dataset.token === token;

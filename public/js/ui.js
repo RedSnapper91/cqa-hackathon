@@ -6,11 +6,11 @@ export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 const P = {
-  dashboard: '<rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/>',
-  dialogs: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4"/>',
-  checklist: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/>',
-  appeal: '<path d="m12 3 8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M12 8v5M12 16.5v.5"/>',
-  import: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+  dashboard: '<path d="M3.5 3.5v15a2 2 0 0 0 2 2h15"/><path d="M8 16.5v-4"/><path d="M12.5 16.5v-9"/><path d="M17 16.5v-6"/>',
+  dialogs: '<path d="M20.5 14.5a2 2 0 0 1-2 2H8.2l-3.9 3.1a.5.5 0 0 1-.8-.4V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 8.5h8.5"/><path d="M8 12h5.5"/>',
+  checklist: '<rect x="8.5" y="2.5" width="7" height="4" rx="1"/><path d="M15.5 4.5h2a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4.5"/>',
+  appeal: '<path d="M12 4v16.5"/><path d="M8 20.5h8"/><path d="M4.5 7.5h15"/><path d="m4.5 7.5-2.6 6a3 3 0 0 0 5.2 0z"/><path d="m19.5 7.5-2.6 6a3 3 0 0 0 5.2 0z"/>',
+  import: '<path d="M12 3v9.5"/><path d="m8.5 9 3.5 3.5L15.5 9"/><path d="M3 14h4.5l1.5 2.5h6l1.5-2.5H21"/><path d="M3 14v4.5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V14"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/>',
   play: '<path d="M7 4v16l13-8z"/>',
@@ -33,6 +33,10 @@ const P = {
   link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
   db: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
   cpu: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  guide: '<path d="M12 7v13.5"/><path d="M3.5 17.5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1H8a4 4 0 0 1 4 4 4 4 0 0 1 4-4h4.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H15a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  'panel-close': '<rect x="3" y="3.5" width="18" height="17" rx="2.5"/><path d="M9 3.5v17"/><path d="m15.5 9.5-2.5 2.5 2.5 2.5"/>',
+  'panel-open': '<rect x="3" y="3.5" width="18" height="17" rx="2.5"/><path d="M9 3.5v17"/><path d="m13.5 9.5 2.5 2.5-2.5 2.5"/>',
+  menu: '<path d="M4 6.5h16"/><path d="M4 12h16"/><path d="M4 17.5h16"/>',
   file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
 };
 export const icon = (name, cls = '') => `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true">${P[name] || ''}</svg>`;
@@ -42,43 +46,20 @@ export function scoreClass(v) {
   return v >= 85 ? 's-hi' : v >= 65 ? 's-mid' : 's-lo';
 }
 export const fmtScore = (v) => (v === null || v === undefined ? '—' : Number(v).toFixed(v % 1 ? 2 : 0));
-export const scoreColor = (v) => (v === null || v === undefined ? 'var(--na)' : v >= 85 ? 'var(--brand)' : v >= 65 ? 'var(--warn)' : 'var(--no)');
+export const scoreColor = (v) => (v === null || v === undefined ? 'var(--na)' : v >= 85 ? 'var(--brand)' : v >= 65 ? 'var(--warn-bar)' : 'var(--no)');
 
-export function ring(value, { size = 132, stroke = 11, label = '', sub = '' } = {}) {
-  const r = (size - stroke) / 2;
-  const c = 2 * Math.PI * r;
+/** Score block: large number "/ 100" with a thin bar. (Named ring() for existing callers.) */
+export function ring(value, { label = '' } = {}) {
   const pct = value === null || value === undefined ? 0 : Math.max(0, Math.min(100, value));
-  const color = scoreColor(value);
-  return `<div class="ring" style="width:${size}px;height:${size}px;--ring-glow:${color}55">
-    <svg width="${size}" height="${size}">
-      <circle class="track" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-width="${stroke}" fill="none"/>
-      <circle class="bar" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-width="${stroke}" fill="none" stroke="${color}"
-        stroke-dasharray="${c}" stroke-dashoffset="${c}" data-target="${c * (1 - pct / 100)}"/>
-    </svg>
-    <div class="label"><div><b style="font-size:${Math.round(size * (value % 1 ? 0.21 : 0.26))}px" data-count="${value ?? ''}">${value === null || value === undefined ? '—' : '0'}</b>${label ? `<small>${esc(label)}</small>` : ''}${sub ? `<small>${sub}</small>` : ''}</div></div>
+  return `<div class="scorebox">
+    ${label ? `<div class="sb-label">${esc(label)}</div>` : ''}
+    <div class="sb-val"><b>${fmtScore(value)}</b><span>${value === null || value === undefined ? '' : '/ 100'}</span></div>
+    <div class="sb-track"><i style="width:${pct}%;background:${scoreColor(value)}"></i></div>
   </div>`;
 }
 
-/** Animate rings and count-ups inside a root after render. */
-export function animate(root = document) {
-  requestAnimationFrame(() => {
-    $$('.ring .bar', root).forEach((el) => (el.style.strokeDashoffset = el.dataset.target));
-    $$('[data-count]', root).forEach((el) => {
-      const target = parseFloat(el.dataset.count);
-      if (Number.isNaN(target)) return;
-      const dec = target % 1 ? 2 : 0;
-      const t0 = performance.now();
-      const dur = 900;
-      const step = (now) => {
-        const k = Math.min(1, (now - t0) / dur);
-        const e = 1 - Math.pow(1 - k, 3);
-        el.textContent = (target * e).toFixed(dec);
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  });
-}
+/** Kept for callers; values are rendered final, without count-up effects. */
+export function animate() {}
 
 export function ansClass(crit, answer) {
   if (answer === 'na') return 'na';
