@@ -125,7 +125,7 @@ class Database:
             db.executescript(SCHEMA)
             if not db.execute("SELECT 1 FROM checklist_versions").fetchone():
                 seed = json.loads(
-                    (ROOT / "config/official_checklist_v1.json").read_text()
+                    (ROOT / "config/official_checklist_v1.json").read_text(encoding="utf-8")
                 )
                 db.execute(
                     "INSERT INTO checklists VALUES(?,?)", ("official", seed["name"])

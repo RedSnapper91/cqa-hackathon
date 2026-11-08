@@ -163,7 +163,7 @@ def create_app(settings=None, provider=None):
     def import_demo():
         return import_dataset(
             database,
-            json.loads((ROOT / "config/synthetic_demo.json").read_text()),
+            json.loads((ROOT / "config/synthetic_demo.json").read_text(encoding="utf-8")),
             "synthetic demo",
         )
 
