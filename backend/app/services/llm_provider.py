@@ -82,7 +82,7 @@ class GeminiProvider:
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 response_mime_type="application/json",
-                response_schema=EvaluationDraft,
+                response_json_schema=EvaluationDraft.model_json_schema(),
             ),
         )
         usage = response.usage_metadata

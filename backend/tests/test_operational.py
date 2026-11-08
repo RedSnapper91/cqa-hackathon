@@ -190,7 +190,7 @@ async def test_gemini_sdk_contract_uses_schema_and_separate_trusted_instruction(
     assert "server-only" not in captured["contents"]
     assert (
         config.response_mime_type == "application/json"
-        and config.response_schema is not None
+        and config.response_json_schema is not None
     )
     assert captured["client_options"]["http_options"].retry_options.attempts == 1
 

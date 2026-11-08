@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0",
+  "team_name": "RedSnapper91 / cqa-hackathon",
+  "model": {
+    "mode": "external_api",
+    "name": "gemini-3.8-flash"
+  },
+  "results": [
+    {
+      "conversation_id": "p2-en-001",
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "The operator greeted the client in English and introduced herself in the first response.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": true,
+          "rationale": "The operator clarified which website the client was currently using before providing instructions.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": null,
+          "rationale": "Identification was not required for general navigation and portal access guidance.",
+          "evidence_turns": [
+            1,
+            14
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 20,
+          "rationale": "The operator provided complete and correct instructions on how to access the trading platform and sign in.",
+          "evidence_turns": [
+            14,
+            15
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "The operator was polite, apologized when clarifying her previous instruction, and showed goodwill.",
+          "evidence_turns": [
+            14,
+            16
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 4,
+          "rationale": "Due to a vague message ('Go to the other one, not the one you're on...'), the client had to re-ask for clarification.",
+          "evidence_turns": [
+            12,
+            13
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": false,
+          "rationale": "The operator said goodbye but did not summarize the outcome nor offer further assistance before concluding.",
+          "evidence_turns": [
+            16
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "No gross violations detected (no insults, personal transaction solicitations, or unauthorized data disclosures).",
+          "evidence_turns": [
+            10,
+            16
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 82.5,
+        "critical_flag": false
+      }
+    },
+    {
+      "conversation_id": "p2-en-002",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-kz-001",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-kz-002",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-kz-003",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-kz-004",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-ru-001",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-ru-002",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    },
+    {
+      "conversation_id": "p2-ru-003",
+      "status": "ok",
+      "criteria": [
+        {
+          "criterion_id": "contact",
+          "value": true,
+          "rationale": "Оператор в первом сообщении поздоровался на русском языке и представился.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "discovery",
+          "value": true,
+          "rationale": "Оператор уточнил недостающую для проверки платежа информацию о времени отправки и валюте перевода.",
+          "evidence_turns": [
+            13
+          ]
+        },
+        {
+          "criterion_id": "identification",
+          "value": true,
+          "rationale": "Идентификация клиента была запрошена и успешно подтверждена до передачи данных и проверки конкретного платежа.",
+          "evidence_turns": [
+            10,
+            12
+          ]
+        },
+        {
+          "criterion_id": "consultation",
+          "value": 20,
+          "rationale": "Оператор передал запрос профильным специалистам, объяснил разницу статусов между банком и брокером и четко сориентировал по дальнейшим действиям.",
+          "evidence_turns": [
+            15,
+            18,
+            20
+          ]
+        },
+        {
+          "criterion_id": "empathy",
+          "value": true,
+          "rationale": "Оператор проявил эмпатию в ответ на беспокойство клиента и поддерживал вежливый тон общения.",
+          "evidence_turns": [
+            10
+          ]
+        },
+        {
+          "criterion_id": "dialogue",
+          "value": 10,
+          "rationale": "Реплики оператора логичны, грамотны, последовательны и понятны клиенту.",
+          "evidence_turns": [
+            18,
+            20
+          ]
+        },
+        {
+          "criterion_id": "closure",
+          "value": true,
+          "rationale": "Оператор подвёл итог о текущих шагах клиента и вежливо попрощался.",
+          "evidence_turns": [
+            22
+          ]
+        },
+        {
+          "criterion_id": "critical",
+          "value": false,
+          "rationale": "Грубых нарушений (оскорблений, предложения услуг в обход компании, несанкционированного раскрытия персональных данных) не зафиксировано.",
+          "evidence_turns": [
+            10,
+            22
+          ]
+        }
+      ],
+      "score": {
+        "final_score": 100.0,
+        "critical_flag": false
+      }
+    },
+    {
+      "conversation_id": "p2-ru-004",
+      "status": "error",
+      "criteria": [],
+      "score": null,
+      "error": "Provider request failed or timed out. Verify key, model, quota and connectivity."
+    }
+  ]
+}
