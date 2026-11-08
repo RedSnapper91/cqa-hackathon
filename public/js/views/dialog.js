@@ -54,7 +54,7 @@ export async function render(view, params, query, token) {
       <section class="stack" id="result">${ev ? result(ev) : `<div class="card">${emptyState('target', t('no_eval'), t('no_eval_text'), `<button class="btn btn-primary" id="run2">${icon('bolt')} ${t('evaluate')}</button>`)}</div>`}</section>
     </div>`;
   animate(view);
-  $('#page-title').textContent = conv.conversation_id;
+  $('#page-title').textContent = conv.external_id || conv.conversation_id;
   $('#page-sub').textContent = `${isCall ? t('call') : t('chat')} · ${conv.language} · ${conv.group_id}`;
 
   const tbody = $('#tbody', view);
@@ -91,7 +91,7 @@ export async function render(view, params, query, token) {
     $$('.crit', view).forEach((c) => c.classList.toggle('active', c.dataset.crit === critId));
     $$('.msg', tbody).forEach((m) => m.classList.remove('evidence', 'inrange'));
     if (!ev || !critId) return;
-    const v = ev.criteria.find((c) => c.criterion_id === critId);
+    const v = (ev.final_criteria || ev.criteria).find((c) => c.criterion_id === critId);
     if (!v) return;
     if (v.checked_range) {
       const [a, b] = v.checked_range;
@@ -103,7 +103,10 @@ export async function render(view, params, query, token) {
   };
   const scrollTo = (idx, flash = true) => {
     const el = $(`.msg[data-idx="${idx}"]`, tbody);
-    if (!el) return;
+    if (!el) {
+      toast('Referenced transcript message is missing.', 'err');
+      return;
+    }
     el.classList.remove('hidden');
     tbody.scrollTo({ top: el.offsetTop - tbody.offsetTop - tbody.clientHeight / 3, behavior: 'smooth' });
     if (window.innerWidth < 1280) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -152,6 +155,9 @@ export async function render(view, params, query, token) {
     $('#audio-card', view).appendChild(f);
   }
   if (isCall) {
+    audio.addEventListener('error', () => {
+      $('#audio-hint', view).textContent = t('audio_fail');
+    });
     audio.addEventListener('timeupdate', () => {
       const tt = audio.currentTime;
       let cur = null;
@@ -177,6 +183,7 @@ export async function render(view, params, query, token) {
     try {
       const r = await runEvaluation({ conversation_ids: [conv.conversation_id], checklist_id: $('#cl', view).value });
       await refreshMeta();
+      if (!r.evaluations?.length) throw new Error(r.errors?.[0]?.error || 'No completed evaluation');
       location.hash = `#/dialog/${encodeURIComponent(conv.conversation_id)}?ev=${r.evaluations[0].id}`;
     } catch (e) {
       toast(e.message, 'err');
@@ -191,12 +198,11 @@ export async function render(view, params, query, token) {
     const crits = ev.checklist.criteria;
     const m = modal(`
       <h3>${t('appeal_title')}</h3>
-      <p class="muted" style="margin:0 0 16px">${esc(conv.conversation_id)} · ${esc(ev.checklist.name)} v${ev.checklist.version}</p>
+      <p class="muted" style="margin:0 0 16px">${esc(conv.external_id || conv.conversation_id)} · ${esc(ev.checklist.name)} v${ev.checklist.version}</p>
       <div class="stack">
         <label class="field"><span>${t('appeal_criterion')}</span>
           <select class="select" id="ap-crit">${crits.map((c) => `<option value="${c.id}" ${c.id === critId ? 'selected' : ''}>${esc(c.code)} · ${esc(c.title)}</option>`).join('')}</select></label>
         <div class="row"><span class="muted" style="font-size:12px;font-weight:700">${t('appeal_current')}:</span> <span id="ap-cur"></span></div>
-        <label class="field"><span>${t('appeal_requested')}</span><select class="select" id="ap-req"></select></label>
         <label class="field"><span>${t('appeal_comment')}</span><textarea class="textarea" id="ap-comment" rows="4" placeholder="${t('appeal_comment_ph')}"></textarea></label>
         <label class="field"><span>${t('appeal_author')}</span><input class="input" id="ap-author" value="Супервайзер"></label>
       </div>
@@ -205,7 +211,6 @@ export async function render(view, params, query, token) {
       const c = crits.find((x) => x.id === $('#ap-crit', m.el).value);
       const v = ev.criteria.find((x) => x.criterion_id === c.id);
       $('#ap-cur', m.el).innerHTML = ans(c, v?.answer);
-      $('#ap-req', m.el).innerHTML = `<option value="">—</option>${answerOptions(c, null)}`;
     };
     syncCrit();
     $('#ap-crit', m.el).addEventListener('change', syncCrit);
@@ -214,7 +219,6 @@ export async function render(view, params, query, token) {
         await api.appeal(ev.id, {
           criterion_id: $('#ap-crit', m.el).value,
           comment: $('#ap-comment', m.el).value,
-          requested_answer: $('#ap-req', m.el).value || null,
           author: $('#ap-author', m.el).value,
         });
         m.close();
@@ -259,7 +263,7 @@ function result(ev) {
           ${changed ? `<div class="row" style="gap:8px"><span class="muted" style="font-size:12px">${t('original')}</span><span class="strike">${fmtScore(os.total)}</span><span class="arrow">→</span><b class="mono">${fmtScore(fs.total)}</b><span class="muted" style="font-size:12px">${t('final')}</span></div>` : ''}
           <div class="cl-name">${esc(ev.checklist.name)} <span class="muted" style="font-weight:400">v${ev.checklist.version}</span></div>
           <div class="row" style="gap:6px">
-            <span class="badge ${ev.engine === 'model' ? 'ok' : 'info'}">${icon('cpu')} ${ev.engine === 'model' ? esc(ev.model) : t('engine_stub')}</span>
+            <span class="badge ${ev.engine === 'model' ? 'ok' : 'info'}">${icon('cpu')} ${ev.engine === 'test' ? 'TEST MODE · deterministic fixture' : ev.engine === 'model' ? esc(ev.model) : t('engine_stub')}</span>
             <span class="badge">${fmtDate(ev.created_at)}</span>
             ${fs.na_count ? `<span class="badge">N/A × ${fs.na_count}</span>` : ''}
           </div>
@@ -282,7 +286,7 @@ function result(ev) {
 }
 
 function critCard(c, ev, row, appeals) {
-  const v = ev.criteria.find((x) => x.criterion_id === c.id) || {};
+  const v = (ev.final_criteria || ev.criteria).find((x) => x.criterion_id === c.id) || {};
   const finalAnswer = row?.answer;
   const changedAppeal = appeals.find((a) => a.status === 'changed');
   const openAppeal = appeals.find((a) => a.status === 'open');

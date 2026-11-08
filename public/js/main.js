@@ -62,7 +62,15 @@ function drawToggle() {
 function drawChrome() {
   const e = state.health?.engine;
   $('#brand-product').textContent = t('brand_product');
-  const engineName = e ? (e.mode === 'model' ? e.label : t('engine_stub')) : '';
+  const engineName = e ? (e.mode === 'test' ? 'TEST MODE' : e.mode === 'model' ? e.label : t('engine_stub')) : '';
+  let banner = document.getElementById('integration-test-banner');
+  if (e?.mode === 'test' && !banner) {
+    banner = document.createElement('div');
+    banner.id = 'integration-test-banner';
+    banner.textContent = 'TEST MODE · Deterministic fixture. Not real AI output.';
+    banner.style.cssText = 'position:sticky;top:0;z-index:100;text-align:center;padding:8px;background:#f6e7bc;color:#6c5521;font-size:12px';
+    document.body.prepend(banner);
+  }
   $('#engine-card').innerHTML = `
     ${e ? `<div class="sb-status" data-tip="${esc(t('footer_engine'))}: ${esc(engineName)}">
       <span class="ic-slot"><span class="dot ${e.mode === 'model' ? 'live' : ''}"></span></span>

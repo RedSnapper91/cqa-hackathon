@@ -43,7 +43,7 @@ function card(a) {
   return `<article class="ap-card">
     <div class="row" style="justify-content:space-between">
       <div class="row" style="gap:8px">
-        <a class="link" style="font-weight:600" href="#/dialog/${encodeURIComponent(a.conversation_id)}?ev=${a.evaluation_id}&crit=${a.criterion_id}">${esc(a.conversation_id)}</a>
+        <a class="link" style="font-weight:600" href="#/dialog/${encodeURIComponent(a.conversation_id)}?ev=${a.evaluation_id}&crit=${a.criterion_id}">${esc(a.external_id || a.conversation_id)}</a>
         <span class="badge">${a.language}</span>
       </div>
       <span class="muted" style="font-size:12px">${fmtDate(a.created_at)}</span>
@@ -78,7 +78,7 @@ async function review(a, view, token) {
 
   const m = modal(`
     <h3>${t('reviewer_title')}</h3>
-    <p class="muted" style="margin:0 0 16px"><span class="mono">${esc(a.conversation_id)}</span> · ${esc(c.code)} ${esc(c.title)}</p>
+    <p class="muted" style="margin:0 0 16px"><span class="mono">${esc(a.external_id || a.conversation_id)}</span> · ${esc(c.code)} ${esc(c.title)}</p>
     <div class="stack">
       <div class="card" style="padding:14px">
         <div class="row" style="justify-content:space-between"><b>${t('appeal_current')}</b>${ans(c, a.original_answer)}</div>

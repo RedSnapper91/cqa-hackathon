@@ -94,9 +94,7 @@ export function fmtDate(iso) {
 
 /** Display timestamp: MM:SS as is; ISO → HH:MM:SS local. */
 export function fmtTs(ts) {
-  if (!ts || !/T/.test(ts)) return ts || '';
-  const d = new Date(ts);
-  return Number.isNaN(d.getTime()) ? ts : d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  return ts || '';
 }
 
 export function toast(msg, kind = 'ok') {

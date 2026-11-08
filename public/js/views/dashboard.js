@@ -75,7 +75,7 @@ export async function render(view, params, query, token) {
           <thead><tr><th>${t('col_dialog')}</th><th>${t('col_status')}</th><th class="num">${t('col_score')}</th></tr></thead>
           <tbody>
           ${risk.map((w) => `<tr>
-              <td><a href="#/dialog/${encodeURIComponent(w.conversation_id)}" style="font-weight:600">${esc(w.conversation_id)}</a></td>
+              <td><a href="#/dialog/${encodeURIComponent(w.conversation_id)}" style="font-weight:600">${esc(w.external_id || w.conversation_id)}</a></td>
               <td>${w.gross ? `<span class="badge gross">${t('gross_error')}</span>` : ''}</td>
               <td class="num"><span class="score-pill ${scoreClass(w.total)}">${fmtScore(w.total)}</span></td>
             </tr>`).join('')}

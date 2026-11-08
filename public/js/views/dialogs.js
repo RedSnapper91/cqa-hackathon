@@ -51,7 +51,7 @@ export async function render(view, params, query, token) {
     if (filters.status === 'appeal' && !e?.open_appeals) return false;
     if (filters.q) {
       const q = filters.q.toLowerCase();
-      if (!c.conversation_id.toLowerCase().includes(q) && !c.preview.toLowerCase().includes(q)) return false;
+      if (!(c.external_id || c.conversation_id).toLowerCase().includes(q) && !c.preview.toLowerCase().includes(q)) return false;
     }
     return true;
   });
@@ -70,7 +70,7 @@ export async function render(view, params, query, token) {
     const total = e ? e.final_total : null;
     return `<tr data-id="${esc(c.conversation_id)}" class="${selected.has(c.conversation_id) ? 'sel' : ''}">
       <td><input type="checkbox" class="cb" data-sel ${selected.has(c.conversation_id) ? 'checked' : ''}></td>
-      <td class="cell-main"><div class="id">${esc(c.conversation_id)}</div><div class="preview">${esc(c.preview)}</div></td>
+      <td class="cell-main"><div class="id">${esc(c.external_id || c.conversation_id)}</div><div class="preview">${esc(c.preview)}</div></td>
       <td>${c.language}</td>
       <td class="hide-sm">${c.channel === 'voice call' ? t('call') : t('chat')}</td>
       <td class="hide-sm mono">${c.messages}</td>

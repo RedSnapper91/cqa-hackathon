@@ -3,22 +3,17 @@ import { t } from '../i18n.js';
 import { esc, icon, fmtDate, toast, $ } from '../ui.js';
 import { state, refreshMeta, runEvaluation, isViewAlive, activeChecklist } from '../state.js';
 
-const CONTRACT = `POST $CQA_MODEL_URL
-{
-  "conversation": { "conversation_id": "p1-ru-001", "channel": "agent chat",
-                    "language": "RU", "transcript": [{ "idx": 0, "timestamp": "00:02",
-                    "speaker": "operator", "text": "Здравствуйте!" }] },
-  "checklist":    { "criteria": [{ "id": "c01", "title": "…", "description": "…",
-                    "na_rule": "…", "type": "binary|scale|flag", "weight": 10,
-                    "allow_na": false, "scale": [{ "value": 20, "label": "…" }] }] },
-  "output_language": "ru"
-}
-→ 200
-{ "criteria": [{ "criterion_id": "c01", "answer": "yes|no|na|<шаг шкалы>",
-                 "explanation": "…", "evidence": [3, 5],
-                 "checked_range": [3, 9] | null, "na_reason": null,
-                 "confidence": 0.9 }],
-  "model": "my-model", "cost_usd": 0.002 }`;
+const CONTRACT = `Browser → Node API gateway → FastAPI → provider adapter
+
+POST /api/evaluations
+{ "conversation_id": "<stable internal id>", "checklist_version_id": "v1" }
+
+Gemini is a placeholder until the server-side provider is configured.
+Unconfigured evaluation returns 503 with no invented score.
+Schemas and provider adapter: backend/app/schemas.py and
+backend/app/services/llm_provider.py.
+
+No API keys or signed organizer URLs belong in the browser.`;
 
 export async function render(view, params, query, token) {
   const st = await api.stats();

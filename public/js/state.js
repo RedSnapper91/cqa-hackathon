@@ -38,7 +38,7 @@ export const checklistOptions = (selected = state.active_checklist_id) =>
 export async function runEvaluation(body) {
   const r = await api.evaluate(body);
   if (r.evaluation) return { evaluations: [r.evaluation] };
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const bar = document.createElement('div');
     bar.className = 'jobbar';
     document.body.appendChild(bar);
@@ -58,6 +58,10 @@ export async function runEvaluation(body) {
           setTimeout(() => bar.remove(), 1400);
           if (j.failed) toast(`${j.failed} ${t('errors')}: ${j.errors[0]?.error || ''}`, 'err');
           await refreshMeta();
+          if (j.failed && !j.evaluations?.length) {
+            reject(new Error(j.errors?.[0]?.error || 'Evaluation failed'));
+            return;
+          }
           resolve(j);
           return;
         }

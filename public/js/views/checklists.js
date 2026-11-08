@@ -5,10 +5,6 @@ import { state, refreshMeta, runEvaluation, isViewAlive } from '../state.js';
 import { computeScore, round2 } from '/lib/scoring.js';
 
 const COLORS = ['#16a34a', '#0f5431', '#64748b', '#b45309', '#0369a1', '#9ca3af', '#475569'];
-const RULE_LABEL = {
-  greeting: 'Приветствие и представление', needs: 'Уточняющие вопросы', identification: 'Идентификация', consultation: 'Полнота консультации',
-  empathy: 'Эмпатия / вежливость', dialog: 'Ведение диалога', closing: 'Прощание', gross: 'Грубые нарушения', keywords: null,
-};
 
 let selId = null;
 let draft = null;
@@ -158,8 +154,7 @@ function critEditor(c, i) {
       ${c.type === 'scale' ? `<div class="field full"><span>${t('c_scale')}</span><div class="scale-rows">
         ${(c.scale || []).map((s, si) => `<div class="scale-row"><input class="input mono" data-step="${si}" data-sf="value" value="${s.value}"><input class="input" data-step="${si}" data-sf="label" value="${esc(s.label)}"><button class="btn btn-ghost btn-sm ic" data-delstep="${si}">${icon('x')}</button></div>`).join('')}
         <button class="btn btn-sm" data-addstep style="align-self:flex-start">+ ${t('add_step')}</button></div></div>` : ''}
-      <label class="field"><span>${t('c_rule')}</span><select class="select" data-f="rule">${state.rule_types.map((r) => `<option value="${r}" ${r === c.rule ? 'selected' : ''}>${RULE_LABEL[r] || t('rule_keywords')}</option>`).join('')}</select></label>
-      ${c.rule === 'keywords' ? `<label class="field"><span>${t('c_keywords')}</span><input class="input" data-f="keywords" value="${esc(c.keywords || '')}" placeholder="подождите, минуту, one moment, күте тұрыңыз"></label>` : '<div></div>'}
+      <div class="muted full">Evaluation follows the configured instructions and exact response scale. No keyword detector is used.</div>
     </div>` : ''}
   </div>`;
 }
